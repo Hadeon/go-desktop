@@ -45,10 +45,31 @@ func (a *App) OpenText(filename string) (string, error) {
 
 // SaveCurrentFile saves text directly to an existing file
 func (a *App) SaveCurrentFile(filename, text string) error {
+	fmt.Printf("SaveCurrentFile called with filename: %s\n", filename)
+	fmt.Printf("Content to save (first 100 chars): %.100s...\n", text)
+	
 	if filename == "" {
 		return fmt.Errorf("no filename provided")
 	}
-	return os.WriteFile(filename, []byte(text), 0644)
+
+	// Write the file
+	if err := os.WriteFile(filename, []byte(text), 0644); err != nil {
+		fmt.Printf("Write error: %v\n", err)
+		return fmt.Errorf("failed to write file: %w", err)
+	}
+
+	// Verify the file was written correctly
+	content, err := os.ReadFile(filename)
+	if err != nil {
+		return fmt.Errorf("failed to verify file write: %w", err)
+	}
+	
+	if string(content) != text {
+		return fmt.Errorf("file content verification failed")
+	}
+
+	fmt.Printf("Successfully verified save of file: %s (size: %d bytes)\n", filename, len(content))
+	return nil
 }
 
 // OpenFileDialog opens a file dialog to select a file
