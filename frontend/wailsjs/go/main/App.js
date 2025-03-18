@@ -5,3 +5,19 @@
 export function Greet(arg1) {
   return window['go']['main']['App']['Greet'](arg1);
 }
+
+export function OpenFileDialog() {
+  return window['go']['main']['App']['OpenFileDialog']();
+}
+
+export function OpenText(arg1) {
+  return window['go']['main']['App']['OpenText'](arg1);
+}
+
+export function SaveFileDialog() {
+  return window['go']['main']['App']['SaveFileDialog']();
+}
+
+export function SaveText(arg1, arg2) {
+  return window['go']['main']['App']['SaveText'](arg1, arg2);
+}
