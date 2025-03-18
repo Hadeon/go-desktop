@@ -40,6 +40,7 @@ function App() {
               document.execCommand("formatBlock", false, "p");
             } else {
               document.execCommand("formatBlock", false, "h1");
+              document.execCommand("justifyCenter");
             }
           }
           break;
@@ -48,6 +49,15 @@ function App() {
             e.preventDefault();
             document.execCommand("insertHorizontalRule");
           }
+          break;
+        default:
+          break;
+      }
+    } else {
+      switch (e.key) {
+        case "Tab":
+          e.preventDefault();
+          document.execCommand("insertText", false, "\t");
           break;
         default:
           break;
