@@ -28,11 +28,11 @@ To build a redistributable, production mode package, use `wails build`.
 
 ### v1.0
 
-[1/2] Allow for basic editing/saving/opening of files.
-[-] Basic formatting (need text wrap, make the page feel more comfortable as a "creative writing app")
-[-] Very bare-bones styling options (italics, bold, header, line break)
-[] Add basic navigation
-[-] Create basic starter theme
+- [-] Allow for basic editing/saving/opening of files.
+- [x] Basic formatting (need text wrap, make the page feel more comfortable as a "creative writing app")
+- [x] Very bare-bones styling options (italics, bold, header, line break)
+- [ ] Add basic navigation
+- [x] Create basic starter theme
 
 ### v2.0
 
