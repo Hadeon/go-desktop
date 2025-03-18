@@ -6,10 +6,12 @@ import {
   SaveText,
   OpenFileDialog,
   SaveFileDialog,
+  SaveCurrentFile,
 } from "../wailsjs/go/main/App";
 
 function App() {
   const [html, setHtml] = useState("");
+  const [currentFilePath, setCurrentFilePath] = useState("");
 
   const handleChange = (e) => {
     setHtml(e.target.value);
@@ -67,10 +69,25 @@ function App() {
 
   const handleSave = async () => {
     console.log("Save button clicked");
-    const filename = await SaveFileDialog();
+    let filename = currentFilePath;
+    if (!filename) {
+      filename = await SaveFileDialog();
+      if (filename) {
+        setCurrentFilePath(filename);
+      }
+    }
     if (filename) {
-      await SaveText(filename, html);
-      alert("File saved successfully!");
+      try {
+        if (currentFilePath) {
+          await SaveCurrentFile(filename, html);
+        } else {
+          await SaveText(filename, html);
+        }
+        alert("File saved successfully!");
+      } catch (error) {
+        console.error("Error saving file:", error);
+        alert("Error saving file!");
+      }
     }
   };
 
@@ -80,6 +97,7 @@ function App() {
     if (filename) {
       const content = await OpenText(filename);
       setHtml(content);
+      setCurrentFilePath(filename);
     }
   };
 
@@ -92,7 +110,7 @@ function App() {
         <button className="clickable" onClick={handleSave}>
           Save
         </button>
-        <button className="clickable">Options</button>
+        <button>{currentFilePath}</button>
       </div>
       <div id="editor-container">
         <ContentEditable

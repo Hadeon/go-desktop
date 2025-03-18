@@ -43,6 +43,14 @@ func (a *App) OpenText(filename string) (string, error) {
 	return string(content), nil
 }
 
+// SaveCurrentFile saves text directly to an existing file
+func (a *App) SaveCurrentFile(filename, text string) error {
+	if filename == "" {
+		return fmt.Errorf("no filename provided")
+	}
+	return os.WriteFile(filename, []byte(text), 0644)
+}
+
 // OpenFileDialog opens a file dialog to select a file
 func (a *App) OpenFileDialog() (string, error) {
 	filename, err := runtime.OpenFileDialog(a.ctx, runtime.OpenDialogOptions{
