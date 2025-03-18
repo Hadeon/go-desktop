@@ -69,35 +69,35 @@ func main() {
 		updateWindowTitle()
 	}
 
-    // Split save functionality into Save and Save As
-    saveFileDialog := func() {
-			if currentFile == nil {
-					dialog.ShowFileSave(func(writer fyne.URIWriteCloser, err error) {
-							if err != nil {
-									dialog.ShowError(err, myWindow)
-									return
-							}
-							saveFile(writer)
-					}, myWindow)
-			} else {
-					// Save to current file
-					writer, err := storage.Writer(currentFile)
-					if err != nil {
-							dialog.ShowError(err, myWindow)
-							return
-					}
-					saveFile(writer)
+	// Split save functionality into Save and Save As
+	saveFileDialog := func() {
+		if currentFile == nil {
+			dialog.ShowFileSave(func(writer fyne.URIWriteCloser, err error) {
+				if err != nil {
+					dialog.ShowError(err, myWindow)
+					return
+				}
+				saveFile(writer)
+			}, myWindow)
+		} else {
+			// Save to current file
+			writer, err := storage.Writer(currentFile)
+			if err != nil {
+				dialog.ShowError(err, myWindow)
+				return
 			}
+			saveFile(writer)
+		}
 	}
 
 	saveAsDialog := func() {
-			dialog.ShowFileSave(func(writer fyne.URIWriteCloser, err error) {
-					if err != nil {
-							dialog.ShowError(err, myWindow)
-							return
-					}
-					saveFile(writer)
-			}, myWindow)
+		dialog.ShowFileSave(func(writer fyne.URIWriteCloser, err error) {
+			if err != nil {
+				dialog.ShowError(err, myWindow)
+				return
+			}
+			saveFile(writer)
+		}, myWindow)
 	}
 
 	// Create toolbar with file operation buttons
