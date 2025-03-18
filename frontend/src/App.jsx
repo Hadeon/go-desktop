@@ -94,13 +94,15 @@ function App() {
         </button>
         <button className="clickable">Options</button>
       </div>
-      <ContentEditable
-        id="editor"
-        html={html}
-        onChange={handleChange}
-        onKeyDown={handleKeyDown}
-        placeholder="Start writing here..."
-      />
+      <div id="editor-container">
+        <ContentEditable
+          id="editor"
+          html={html}
+          onChange={handleChange}
+          onKeyDown={handleKeyDown}
+          placeholder="Start writing here..."
+        />
+      </div>
     </div>
   );
 }
