@@ -39,6 +39,8 @@ To build a redistributable, production mode package, use `wails build`.
 - Allow saving and opening of different file formats.
 - Swap between themes, or the ability to create/import custom themes
 - Spellchecker
+- Add a custom scroll on the right side which shows header (chapter) "nodes" you can click on to quickly autoscroll to them.
+  - Maybe show ticks for the number of pages between nodes, so you can visually see variations of chapter lengths
 
 ### v3.0
 
