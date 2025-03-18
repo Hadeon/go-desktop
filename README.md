@@ -50,3 +50,5 @@ To build a redistributable, production mode package, use `wails build`.
     - Plot points, characters, etc.
       - Think a lightweight Obsidian graph but more like a "cork board" with stripped down features
   - Possibly a very basic Spotify / Apple Music player which doesn't allow music controls (to reduce distractions) but can play playlists or stations. (Play / Pause being the only options outside of station or playlist selection)
+
+### Changelog
