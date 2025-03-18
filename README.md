@@ -1,8 +1,14 @@
 # README
 
+# Go Desktop Creative Writing Application
+
+This is just a starter application for a very lightweight creative writing application written in Go.
+
+Usual installation and build steps for a Go project, nothing fancy at the moment.
+
 ## About
 
-This is the official Wails React template.
+This is built on the Wails React template.
 
 You can configure the project by editing `wails.json`. More information about the project settings can be found
 here: https://wails.io/docs/reference/project-config
@@ -17,3 +23,28 @@ to this in your browser, and you can call your Go code from devtools.
 ## Building
 
 To build a redistributable, production mode package, use `wails build`.
+
+## Roadmap
+
+### v1.0
+
+- Allow for basic editing/saving/opening of files.
+- Basic formatting (need text wrap, make the page feel more comfortable as a "creative writing app")
+- Very bare-bones styling options (italics, bold, header, line break)
+- Add basic navigation
+- Create basic starter theme
+
+### v2.0
+
+- Allow saving and opening of different file formats.
+- Swap between themes, or the ability to create/import custom themes
+- Spellchecker
+
+### v3.0
+
+- TBD
+  - Possibly integrate some very basic local AI for proofreading / edits
+  - Possibly create a graph or "node" viewer to link ideas
+    - Plot points, characters, etc.
+      - Think a lightweight Obsidian graph but more like a "cork board" with stripped down features
+  - Possibly a very basic Spotify / Apple Music player which doesn't allow music controls (to reduce distractions) but can play playlists or stations. (Play / Pause being the only options outside of station or playlist selection)
