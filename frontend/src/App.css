@@ -12,11 +12,9 @@
 }
 
 #app {
-  height: 100%;
+  height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
   background-color: var(--background-color);
 }
 
@@ -44,6 +42,19 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   span {
     margin-left: 1rem;
+    cursor: pointer;
+  }
+  button {
+    margin-left: 1rem;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: var(--text-color);
+    font-family: "Nunito", sans-serif;
+    font-size: 1rem;
+  }
+  button:hover {
+    text-decoration: underline;
   }
 }
 
@@ -91,10 +102,20 @@
   background-color: var(--input-hover-background-color);
 }
 
+#editor-container {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
 #editor {
   width: 90%;
-  height: 300px;
+  height: calc(100vh - 100px); /* Subtract the height of the navbar */
   padding: 20px;
+  margin: 10px 0px 10px 0px;
   border: none;
   border-radius: 10px;
   background-color: var(--editor-background-color);
@@ -104,7 +125,12 @@
   outline: none;
   resize: none;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
+  text-align: left;
+  overflow-y: auto;
+}
+
+#editor h1 {
+  text-align: center;
 }
 
 #preview {
@@ -117,4 +143,43 @@
   font-family: "Nunito", sans-serif;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   overflow-y: auto;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(40, 44, 52, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.modal {
+  background: #21252b;
+  border: 1px solid #61afef;
+  border-radius: 8px;
+  padding: 24px;
+  text-align: center;
+  color: #abb2bf;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.modal button {
+  background: #61afef;
+  border: none;
+  border-radius: 4px;
+  color: #282c34;
+  padding: 8px 16px;
+  margin: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.2s ease;
+}
+
+.modal button:hover {
+  background: #528bff;
 }
