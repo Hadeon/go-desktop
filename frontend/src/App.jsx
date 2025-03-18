@@ -26,6 +26,29 @@ function App() {
           e.preventDefault();
           document.execCommand("italic");
           break;
+        case "u":
+          e.preventDefault();
+          document.execCommand("underline");
+          break;
+        case "l":
+          e.preventDefault();
+          const selection = window.getSelection();
+          if (selection.rangeCount > 0) {
+            const range = selection.getRangeAt(0);
+            const parentElement = range.commonAncestorContainer.parentElement;
+            if (parentElement.tagName === "H1") {
+              document.execCommand("formatBlock", false, "p");
+            } else {
+              document.execCommand("formatBlock", false, "h1");
+            }
+          }
+          break;
+        case "H":
+          if (e.shiftKey) {
+            e.preventDefault();
+            document.execCommand("insertHorizontalRule");
+          }
+          break;
         default:
           break;
       }
