@@ -9,6 +9,7 @@ import (
 	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/dialog"
+	"fyne.io/fyne/v2/storage"
 	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
 )
@@ -16,6 +17,19 @@ import (
 func main() {
 	myApp := app.New()
 	myWindow := myApp.NewWindow("Creative Writing App")
+
+	// Add current file tracking
+	var currentFile fyne.URI
+
+	// Update window title to show current file
+	updateWindowTitle := func() {
+		if currentFile != nil {
+			myWindow.SetTitle("Creative Writing App - " + currentFile.Name())
+		} else {
+			myWindow.SetTitle("Creative Writing App - Untitled")
+		}
+	}
+	updateWindowTitle()
 
 	// Create a multi-line text editor for writing
 	editor := widget.NewMultiLineEntry()
@@ -39,7 +53,9 @@ func main() {
 				dialog.ShowError(err, myWindow)
 				return
 			}
+			currentFile = reader.URI()
 			editor.SetText(string(data))
+			updateWindowTitle()
 		}, myWindow)
 	}
 
@@ -49,22 +65,46 @@ func main() {
 		}
 		defer writer.Close()
 		writer.Write([]byte(editor.Text))
+		currentFile = writer.URI()
+		updateWindowTitle()
 	}
 
-	saveFileDialog := func() {
-		dialog.ShowFileSave(func(writer fyne.URIWriteCloser, err error) {
-			if err != nil {
-				dialog.ShowError(err, myWindow)
-				return
+    // Split save functionality into Save and Save As
+    saveFileDialog := func() {
+			if currentFile == nil {
+					dialog.ShowFileSave(func(writer fyne.URIWriteCloser, err error) {
+							if err != nil {
+									dialog.ShowError(err, myWindow)
+									return
+							}
+							saveFile(writer)
+					}, myWindow)
+			} else {
+					// Save to current file
+					writer, err := storage.Writer(currentFile)
+					if err != nil {
+							dialog.ShowError(err, myWindow)
+							return
+					}
+					saveFile(writer)
 			}
-			saveFile(writer)
-		}, myWindow)
+	}
+
+	saveAsDialog := func() {
+			dialog.ShowFileSave(func(writer fyne.URIWriteCloser, err error) {
+					if err != nil {
+							dialog.ShowError(err, myWindow)
+							return
+					}
+					saveFile(writer)
+			}, myWindow)
 	}
 
 	// Create toolbar with file operation buttons
 	toolbar := widget.NewToolbar(
 		widget.NewToolbarAction(theme.FolderOpenIcon(), openFile),
 		widget.NewToolbarAction(theme.DocumentSaveIcon(), saveFileDialog),
+		widget.NewToolbarAction(theme.DocumentCreateIcon(), saveAsDialog),
 	)
 
 	// Create menu with file operations
@@ -72,7 +112,7 @@ func main() {
 		fyne.NewMenu("File",
 			fyne.NewMenuItem("Open", openFile),
 			fyne.NewMenuItem("Save", saveFileDialog),
-			fyne.NewMenuItem("Save As", saveFileDialog),
+			fyne.NewMenuItem("Save As", saveAsDialog),
 		),
 	)
 	myWindow.SetMainMenu(mainMenu)
