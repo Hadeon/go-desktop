@@ -21,6 +21,12 @@ function App() {
     setCurrentFilePath(path);
   };
 
+  // Reset state for a new file
+  const handleNew = useCallback(() => {
+    setHtml("");
+    updateFilePath("");
+  }, []);
+
   const handleSave = useCallback(async () => {
     const editorContent = document.getElementById("editor").innerHTML;
     const currentPath = currentFilePathRef.current;
@@ -118,6 +124,10 @@ function App() {
   return (
     <div id="App">
       <div id="navbar">
+        {/* New button added for New functionality */}
+        <button className="clickable" onClick={handleNew}>
+          New
+        </button>
         <button className="clickable" onClick={handleOpen}>
           Open
         </button>
