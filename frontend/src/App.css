@@ -1,10 +1,23 @@
+:root {
+  --background-color: #282c34;
+  --navbar-color: #21252b;
+  --text-color: #abb2bf;
+  --button-background-color: #61afef;
+  --button-hover-background-color: #528bff;
+  --button-text-color: #282c34;
+  --input-background-color: #3e4451;
+  --input-hover-background-color: #4b5263;
+  --editor-background-color: #21252b;
+  --editor-text-color: #abb2bf;
+}
+
 #app {
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: rgba(27, 38, 54, 1);
+  background-color: var(--background-color);
 }
 
 #logo {
@@ -23,12 +36,15 @@
   width: 100%;
   height: 40px;
   display: flex;
-  justify-content: space-around;
+  justify-content: start;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.8);
-  color: white;
+  background-color: var(--navbar-color);
+  color: var(--text-color);
   font-family: "Nunito", sans-serif;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  span {
+    margin-left: 1rem;
+  }
 }
 
 .result {
@@ -46,11 +62,13 @@
   margin: 0 0 0 20px;
   padding: 0 8px;
   cursor: pointer;
+  background-color: var(--button-background-color);
+  color: var(--button-text-color);
 }
 
 .input-box .btn:hover {
-  background-image: linear-gradient(to top, #cfd9df 0%, #e2ebf0 100%);
-  color: #333333;
+  background-color: var(--button-hover-background-color);
+  color: #ffffff;
 }
 
 .input-box .input {
@@ -60,18 +78,17 @@
   height: 30px;
   line-height: 30px;
   padding: 0 10px;
-  background-color: rgba(240, 240, 240, 1);
-  -webkit-font-smoothing: antialiased;
+  background-color: var(--input-background-color);
+  color: var(--text-color);
+  font-smoothing: antialiased;
 }
 
 .input-box .input:hover {
-  border: none;
-  background-color: rgba(255, 255, 255, 1);
+  background-color: var(--input-hover-background-color);
 }
 
 .input-box .input:focus {
-  border: none;
-  background-color: rgba(255, 255, 255, 1);
+  background-color: var(--input-hover-background-color);
 }
 
 #editor {
@@ -80,8 +97,8 @@
   padding: 20px;
   border: none;
   border-radius: 10px;
-  background-color: white;
-  color: black;
+  background-color: var(--editor-background-color);
+  color: var(--editor-text-color);
   font-size: 16px;
   font-family: "Nunito", sans-serif;
   outline: none;
@@ -94,8 +111,8 @@
   width: 90%;
   padding: 20px;
   border-radius: 10px;
-  background-color: white;
-  color: black;
+  background-color: var(--editor-background-color);
+  color: var(--editor-text-color);
   font-size: 16px;
   font-family: "Nunito", sans-serif;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
