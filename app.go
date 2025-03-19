@@ -98,40 +98,55 @@ func (a *App) SaveFileDialog() (string, error) {
 
 // CalculateStatistics calculates word count, number of headers, and number of pages
 func (a *App) CalculateStatistics(text string) map[string]interface{} {
-	// Remove HTML tags
+	fmt.Println("🚀 CalculateStatistics called")
+
+	// Remove HTML tags for word counting
 	re := regexp.MustCompile(`<[^>]*>`)
 	cleanText := re.ReplaceAllString(text, "")
 
-	// Calculate statistics
-	wordCount := len(strings.Fields(cleanText))
-	headerCount := strings.Count(text, "<h1>") + strings.Count(text, "<h2>") + strings.Count(text, "<h3>") + strings.Count(text, "<h4>") + strings.Count(text, "<h5>") + strings.Count(text, "<h6>")
-	pageCount := (wordCount / 300) + 1 // Assuming 300 words per page
+	// Split the cleaned text into words
+	words := strings.Fields(cleanText)
+	wordCount := len(words)
 
-// Calculate header positions
-headerPositions := []map[string]interface{}{}
-headerRe := regexp.MustCompile(`<(h[1-6])[^>]*>(.*?)</h[1-6]>`)
-matches := headerRe.FindAllStringSubmatch(text, -1)
+	// Define words per page
+	wordsPerPage := 300
+	pageCount := (wordCount / wordsPerPage) + 1
 
-for _, match := range matches {
-    headerTag := match[1] // Directly reference the header tag as a string (e.g., "h1", "h2")
-    rawHeaderText := match[2] // Capture the text inside the header
+	// Track headers while iterating through the words
+	headerPositions := []map[string]interface{}{}
 
-    // Remove inner HTML tags using another regex
-    innerTagRe := regexp.MustCompile(`<[^>]*>`)
-    cleanHeaderText := innerTagRe.ReplaceAllString(rawHeaderText, "")
+	// Regex to match headers (works without \1 backreference)
+	headerRe := regexp.MustCompile(`<(h[1-6])[^>]*>(.*?)</h[1-6]>`)
 
-    headerPositions = append(headerPositions, map[string]interface{}{
-        "tag":  headerTag, // Correctly extracts the header tag
-        "text": cleanHeaderText, // Now gets only plain text inside the header
-        "top":  strings.Index(text, match[0]), // Finds the start position in the original text
-    })
-}
+	// Find all headers in the text
+	matches := headerRe.FindAllStringSubmatchIndex(text, -1)
 
+	for index, match := range matches {
+			// Extract header details
+			headerTag := text[match[2]:match[3]]
+			headerText := text[match[4]:match[5]]
+
+			// Calculate page number based on words before this header
+			wordsBeforeHeader := len(strings.Fields(cleanText[:match[0]]))
+			headerPage := (wordsBeforeHeader / wordsPerPage) + 1
+
+			// Store the header along with its assigned page
+			headerPositions = append(headerPositions, map[string]interface{}{
+					"id":   fmt.Sprintf("%s-%d", headerTag, index),
+					"tag":  headerTag,
+					"text": headerText,
+					"page": headerPage,
+			})
+
+			fmt.Printf("✅ Found header: %s on page %d (Words before: %d)\n", headerText, headerPage, wordsBeforeHeader)
+	}
+
+	fmt.Printf("📊 Final header positions: %v\n", headerPositions)
 
 	return map[string]interface{}{
-		"wordCount":      wordCount,
-		"headerCount":    headerCount,
-		"pageCount":      pageCount,
-		"headerPositions": headerPositions,
+			"wordCount":       wordCount,
+			"headerCount":     len(headerPositions),
+			"pageCount":       pageCount,
+			"headerPositions": headerPositions,
 	}
 }
