@@ -2,18 +2,23 @@ import React, { useEffect, useState } from "react";
 import "./scroll-area.css";
 import HeaderNode from "./header-node";
 
-const ScrollArea = ({ scrollTop, scrollHeight, clientHeight, headers }) => {
-  const [headerPositions, setHeaderPositions] = useState([]);
+const ScrollArea = ({ scrollTop, scrollHeight, clientHeight, statistics }) => {
+  const [pageTicks, setPageTicks] = useState([]);
 
   useEffect(() => {
-    setHeaderPositions(headers);
-  }, [headers]);
+    const ticks = Array.from({ length: statistics.pageCount }, (_, index) => ({
+      id: `page-${index + 1}`,
+      page: index + 1,
+    }));
+    setPageTicks(ticks);
+  }, [statistics.pageCount]);
 
-  const handleScrollToHeader = (top) => {
+  const handleScrollToPage = (page) => {
     const editor = document.getElementById("editor");
     if (editor) {
+      const pageHeight = scrollHeight / statistics.pageCount;
       editor.scrollTo({
-        top: top,
+        top: pageHeight * (page - 1),
         behavior: "smooth",
       });
     }
@@ -28,13 +33,14 @@ const ScrollArea = ({ scrollTop, scrollHeight, clientHeight, headers }) => {
         className="scroll-indicator"
         style={{ height: `${scrollPercent}%` }}
       ></div>
-      {headerPositions.map((header, index) => (
-        <HeaderNode
-          key={header.id}
-          top={header.top}
-          onClick={() => handleScrollToHeader(header.top)}
-          style={{ marginTop: index === 0 ? 0 : "10px" }}
-        />
+      {pageTicks.map((tick) => (
+        <div
+          key={tick.id}
+          className="page-tick"
+          onClick={() => handleScrollToPage(tick.page)}
+        >
+          {tick.page}
+        </div>
       ))}
     </div>
   );

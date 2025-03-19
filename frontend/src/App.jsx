@@ -158,6 +158,7 @@ function App() {
           scrollHeight={scrollState.scrollHeight}
           clientHeight={scrollState.clientHeight}
           headers={headers}
+          statistics={statistics}
         />
       </div>
       {confirmVisible && (
