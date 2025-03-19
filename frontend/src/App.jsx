@@ -59,15 +59,12 @@ function App() {
           };
         }
       );
-      console.log("Header positions:", headerPositions);
       setHeaders(headerPositions);
     }
   };
 
   const updateStatistics = async (text) => {
-    console.log("updateStatistics called with text:", text);
     const [wordCount, headerCount, pageCount] = await CalculateStatistics(text);
-    console.log("Statistics received:", { wordCount, headerCount, pageCount });
     setStatistics({ wordCount, headerCount, pageCount });
   };
 
@@ -126,10 +123,6 @@ function App() {
   useEffect(() => {
     updateHeaders();
   }, [currentFilePath]);
-
-  useEffect(() => {
-    console.log("Statistics updated:", statistics);
-  }, [statistics]);
 
   return (
     <div id="App">

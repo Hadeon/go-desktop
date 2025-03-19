@@ -10,7 +10,6 @@ const ScrollArea = ({ scrollTop, scrollHeight, clientHeight, headers }) => {
   }, [headers]);
 
   const handleScrollToHeader = (top) => {
-    console.log("NODE CLICKED, top:", top);
     const editor = document.getElementById("editor");
     if (editor) {
       editor.scrollTo({
