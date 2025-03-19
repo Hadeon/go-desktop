@@ -5,10 +5,16 @@ import { handleHotkeys } from "./utils/keybindings";
 import { useFileOperations } from "./hooks/useFileOperations";
 import { useConfirm } from "./hooks/useConfirm";
 import ScrollArea from "./components/scroll-area";
+import { CalculateStatistics } from "../wailsjs/go/main/App";
 
 function App() {
   const [html, setHtml] = useState("");
   const [headers, setHeaders] = useState([]);
+  const [statistics, setStatistics] = useState({
+    wordCount: 0,
+    headerCount: 0,
+    pageCount: 0,
+  });
   const {
     currentFilePath,
     unsaved,
@@ -58,6 +64,13 @@ function App() {
     }
   };
 
+  const updateStatistics = async (text) => {
+    console.log("updateStatistics called with text:", text);
+    const [wordCount, headerCount, pageCount] = await CalculateStatistics(text);
+    console.log("Statistics received:", { wordCount, headerCount, pageCount });
+    setStatistics({ wordCount, headerCount, pageCount });
+  };
+
   const handleNew = useCallback(async () => {
     if (unsaved) {
       const result = await showConfirm(
@@ -68,6 +81,7 @@ function App() {
     setHtml("");
     updateFilePath("");
     setUnsaved(false);
+    setStatistics({ wordCount: 0, headerCount: 0, pageCount: 0 });
   }, [unsaved, showConfirm, setUnsaved, updateFilePath]);
 
   const handleOpenFile = useCallback(async () => {
@@ -81,6 +95,7 @@ function App() {
     if (content !== null) {
       setHtml(content);
       updateHeaders();
+      updateStatistics(content);
     }
   }, [unsaved, showConfirm, handleOpen]);
 
@@ -94,6 +109,7 @@ function App() {
   const handleChange = (e) => {
     setHtml(e.target.value);
     setUnsaved(true);
+    updateStatistics(e.target.value);
   };
 
   useEffect(() => {
@@ -111,6 +127,10 @@ function App() {
     updateHeaders();
   }, [currentFilePath]);
 
+  useEffect(() => {
+    console.log("Statistics updated:", statistics);
+  }, [statistics]);
+
   return (
     <div id="App">
       <div id="navbar">
@@ -124,6 +144,13 @@ function App() {
           Save
         </button>
         <button>{currentFilePath}</button>
+        {/* TEMPORARY STATISTICS */}
+        {/* WE WILL MOVE THIS ELSEWHERE, FOR NOW ITS HELPFUL TO SEE */}
+        <div>
+          <span>Words: {statistics.wordCount}</span>
+          <span>Headers: {statistics.headerCount}</span>
+          <span>Pages: {statistics.pageCount}</span>
+        </div>
       </div>
       <div
         id="editor-wrapper"
