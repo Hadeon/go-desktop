@@ -41,12 +41,12 @@ const ScrollArea = ({
     }
   };
 
-  const handleScrollToHeader = (top) => {
-    const editor = document.getElementById("editor");
-    if (editor) {
-      editor.scrollTo({
-        top: top,
+  const handleScrollToHeader = (header) => {
+    const headerElement = document.getElementById(header.id);
+    if (headerElement) {
+      headerElement.scrollIntoView({
         behavior: "smooth",
+        block: "start",
       });
     }
   };
@@ -68,7 +68,7 @@ const ScrollArea = ({
               <HeaderNode
                 key={header.id}
                 text={header.page}
-                onClick={() => handleScrollToHeader(header.top)}
+                onClick={() => handleScrollToHeader(header)}
                 style={{ marginTop: "10px" }}
               />
             ))

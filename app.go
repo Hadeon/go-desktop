@@ -43,7 +43,6 @@ func (a *App) OpenText(filename string) (string, error) {
 // SaveCurrentFile saves text directly to an existing file
 func (a *App) SaveCurrentFile(filename, text string) error {
 	fmt.Printf("SaveCurrentFile called with filename: %s\n", filename)
-	fmt.Printf("Content to save (first 100 chars): %.100s...\n", text)
 	
 	if filename == "" {
 		return fmt.Errorf("no filename provided")
@@ -115,38 +114,46 @@ func (a *App) CalculateStatistics(text string) map[string]interface{} {
 	// Track headers while iterating through the words
 	headerPositions := []map[string]interface{}{}
 
-	// Regex to match headers (works without \1 backreference)
-	headerRe := regexp.MustCompile(`<(h[1-6])[^>]*>(.*?)</h[1-6]>`)
+	// Regex to match headers
+	headerRe := regexp.MustCompile(`<(h[1-6])([^>]*)>(.*?)</h[1-6]>`)
 
-	// Find all headers in the text
-	matches := headerRe.FindAllStringSubmatchIndex(text, -1)
+	// Replace headers in text and store them in headerPositions
+	modifiedText := headerRe.ReplaceAllStringFunc(text, func(header string) string {
+		match := headerRe.FindStringSubmatch(header)
+		if len(match) < 4 {
+			return header // If no proper match, return unchanged
+		}
 
-	for index, match := range matches {
-			// Extract header details
-			headerTag := text[match[2]:match[3]]
-			headerText := text[match[4]:match[5]]
+		headerTag := match[1]  // h1, h2, etc.
+		headerAttrs := match[2] // Any existing attributes
+		headerText := match[3]  // Inner text
 
-			// Calculate page number based on words before this header
-			wordsBeforeHeader := len(strings.Fields(cleanText[:match[0]]))
-			headerPage := (wordsBeforeHeader / wordsPerPage) + 1
+		// Generate a unique header ID
+		headerId := fmt.Sprintf("%s-%d", headerTag, len(headerPositions))
 
-			// Store the header along with its assigned page
-			headerPositions = append(headerPositions, map[string]interface{}{
-					"id":   fmt.Sprintf("%s-%d", headerTag, index),
-					"tag":  headerTag,
-					"text": headerText,
-					"page": headerPage,
-			})
+		// Find word position to determine page number
+		wordsBeforeHeader := len(strings.Fields(cleanText[:strings.Index(text, header)]))
+		headerPage := (wordsBeforeHeader / wordsPerPage) + 1
 
-			fmt.Printf("✅ Found header: %s on page %d (Words before: %d)\n", headerText, headerPage, wordsBeforeHeader)
-	}
+		// Store header info
+		headerPositions = append(headerPositions, map[string]interface{}{
+			"id":   headerId,
+			"tag":  headerTag,
+			"text": headerText,
+			"page": headerPage,
+		})
+
+		// Return modified header with ID inserted
+		return fmt.Sprintf(`<%s id="%s"%s>%s</%s>`, headerTag, headerId, headerAttrs, headerText, headerTag)
+	})
 
 	fmt.Printf("📊 Final header positions: %v\n", headerPositions)
 
 	return map[string]interface{}{
-			"wordCount":       wordCount,
-			"headerCount":     len(headerPositions),
-			"pageCount":       pageCount,
-			"headerPositions": headerPositions,
+		"wordCount":       wordCount,
+		"headerCount":     len(headerPositions),
+		"pageCount":       pageCount,
+		"headerPositions": headerPositions,
+		"modifiedText":    modifiedText,
 	}
 }

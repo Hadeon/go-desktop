@@ -67,6 +67,11 @@ function App() {
 
   const updateStatistics = async (text) => {
     const stats = await CalculateStatistics(text);
+
+    if (stats.modifiedText) {
+      setHtml(stats.modifiedText);
+    }
+
     setStatistics(stats);
   };
 
@@ -128,6 +133,9 @@ function App() {
   }, [unsaved]);
 
   useEffect(() => {
+    const { scrollTop, scrollHeight, clientHeight } =
+      editorContainerRef.current;
+    setScrollState({ scrollTop, scrollHeight, clientHeight });
     updateHeaders();
   }, [currentFilePath]);
 
@@ -147,7 +155,6 @@ function App() {
         <div
           id="editor-container"
           ref={editorContainerRef}
-          onScroll={handleScroll}
           style={{ flex: 1, overflowY: "auto" }}
         >
           <ContentEditable
@@ -155,6 +162,7 @@ function App() {
             html={html}
             onChange={handleChange}
             onKeyDown={handleKeyDown}
+            onScroll={handleScroll}
             placeholder="Start writing here..."
             className="editable-content"
           />
