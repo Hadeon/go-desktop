@@ -31,8 +31,6 @@ func main() {
 		OnStartup:        app.startup,
 		Mac: &mac.Options{
 			Preferences: &mac.Preferences{
-				TabFocusesLinks:        mac.Enabled,
-				TextInteractionEnabled: mac.Disabled,
 				FullscreenEnabled:      mac.Enabled,
 			},
 		},

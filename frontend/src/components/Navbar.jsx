@@ -21,11 +21,11 @@ const Navbar = ({
       <button>{currentFilePath}</button>
       {/* TEMPORARY STATISTICS */}
       {/* WE WILL MOVE THIS ELSEWHERE, FOR NOW ITS HELPFUL TO SEE */}
-      <div>
+      {/* <div>
         <span>Words: {statistics.wordCount}</span>
         <span>Headers: {statistics.headerCount}</span>
         <span>Pages: {statistics.pageCount}</span>
-      </div>
+      </div> */}
     </div>
   );
 };

@@ -67,7 +67,7 @@ const ScrollArea = ({
             tick.headers.map((header) => (
               <HeaderNode
                 key={header.id}
-                text={header.text}
+                text={header.page}
                 onClick={() => handleScrollToHeader(header.top)}
                 style={{ marginTop: "10px" }}
               />

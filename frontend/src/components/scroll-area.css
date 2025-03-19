@@ -27,10 +27,14 @@
 }
 
 .header-node-circle {
-  width: 10px;
-  height: 10px;
-  background-color: red;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  height: 20px;
+  background-color: var(--input-hover-background-color);
   border-radius: 50%;
+  margin-bottom: 20px;
 }
 
 .page-tick {
@@ -41,6 +45,11 @@
   font-size: 12px;
   height: 20px;
   user-select: none;
+}
+
+.page-tick:hover {
+  cursor: pointer;
+  color: var(--button-hover-background-color);
 }
 
 .page-tick-container {

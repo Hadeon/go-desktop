@@ -1,6 +1,7 @@
-const HeaderNode = ({ onClick, style }) => {
+const HeaderNode = ({ key, text, onClick, style }) => {
   return (
     <div
+      key={key}
       className="header-node"
       onClick={onClick}
       style={{ ...style, cursor: "pointer" }}
