@@ -35,3 +35,9 @@
   height: 20px;
   user-select: none;
 }
+
+.page-tick-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

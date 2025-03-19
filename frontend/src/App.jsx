@@ -15,6 +15,7 @@ function App() {
     wordCount: 0,
     headerCount: 0,
     pageCount: 0,
+    headerPositions: [],
   });
   const {
     currentFilePath,
@@ -65,8 +66,8 @@ function App() {
   };
 
   const updateStatistics = async (text) => {
-    const [wordCount, headerCount, pageCount] = await CalculateStatistics(text);
-    setStatistics({ wordCount, headerCount, pageCount });
+    const stats = await CalculateStatistics(text);
+    setStatistics(stats);
   };
 
   const handleNew = useCallback(async () => {
@@ -79,7 +80,12 @@ function App() {
     setHtml("");
     updateFilePath("");
     setUnsaved(false);
-    setStatistics({ wordCount: 0, headerCount: 0, pageCount: 0 });
+    setStatistics({
+      wordCount: 0,
+      headerCount: 0,
+      pageCount: 0,
+      headerPositions: [],
+    });
   }, [unsaved, showConfirm, setUnsaved, updateFilePath]);
 
   const handleOpenFile = useCallback(async () => {
@@ -157,7 +163,7 @@ function App() {
           scrollTop={scrollState.scrollTop}
           scrollHeight={scrollState.scrollHeight}
           clientHeight={scrollState.clientHeight}
-          headers={headers}
+          headers={statistics.headerPositions}
           statistics={statistics}
         />
       </div>

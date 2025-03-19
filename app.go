@@ -26,11 +26,6 @@ func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
 }
 
-// Greet returns a greeting for the given name
-func (a *App) Greet(name string) string {
-	return fmt.Sprintf("Hello %s, It's show time!", name)
-}
-
 // SaveText saves the given text to a file
 func (a *App) SaveText(filename, text string) error {
 	return os.WriteFile(filename, []byte(text), 0644)
@@ -102,7 +97,7 @@ func (a *App) SaveFileDialog() (string, error) {
 }
 
 // CalculateStatistics calculates word count, number of headers, and number of pages
-func (a *App) CalculateStatistics(text string) []int {
+func (a *App) CalculateStatistics(text string) map[string]interface{} {
 	// Remove HTML tags
 	re := regexp.MustCompile(`<[^>]*>`)
 	cleanText := re.ReplaceAllString(text, "")
@@ -112,5 +107,31 @@ func (a *App) CalculateStatistics(text string) []int {
 	headerCount := strings.Count(text, "<h1>") + strings.Count(text, "<h2>") + strings.Count(text, "<h3>") + strings.Count(text, "<h4>") + strings.Count(text, "<h5>") + strings.Count(text, "<h6>")
 	pageCount := (wordCount / 300) + 1 // Assuming 300 words per page
 
-	return []int{wordCount, headerCount, pageCount}
+// Calculate header positions
+headerPositions := []map[string]interface{}{}
+headerRe := regexp.MustCompile(`<(h[1-6])[^>]*>(.*?)</h[1-6]>`)
+matches := headerRe.FindAllStringSubmatch(text, -1)
+
+for _, match := range matches {
+    headerTag := match[1] // Directly reference the header tag as a string (e.g., "h1", "h2")
+    rawHeaderText := match[2] // Capture the text inside the header
+
+    // Remove inner HTML tags using another regex
+    innerTagRe := regexp.MustCompile(`<[^>]*>`)
+    cleanHeaderText := innerTagRe.ReplaceAllString(rawHeaderText, "")
+
+    headerPositions = append(headerPositions, map[string]interface{}{
+        "tag":  headerTag, // Correctly extracts the header tag
+        "text": cleanHeaderText, // Now gets only plain text inside the header
+        "top":  strings.Index(text, match[0]), // Finds the start position in the original text
+    })
+}
+
+
+	return map[string]interface{}{
+		"wordCount":      wordCount,
+		"headerCount":    headerCount,
+		"pageCount":      pageCount,
+		"headerPositions": headerPositions,
+	}
 }
