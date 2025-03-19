@@ -1,8 +1,21 @@
-import React from "react";
-import "./scroll-area.css"; // Create this stylesheet for style overrides
+import React, { useEffect, useState } from "react";
+import "./scroll-area.css";
+import HeaderNode from "./header-node";
 
-const ScrollArea = ({ scrollTop, scrollHeight, clientHeight }) => {
-  // Calculate scroll percent (0-100)
+const ScrollArea = ({ scrollTop, scrollHeight, clientHeight, headers }) => {
+  const [headerPositions, setHeaderPositions] = useState([]);
+
+  useEffect(() => {
+    setHeaderPositions(headers);
+  }, [headers]);
+
+  const handleScrollToHeader = (top) => {
+    const editorContainer = document.getElementById("editor-container");
+    if (editorContainer) {
+      editorContainer.scrollTo({ top, behavior: "smooth" });
+    }
+  };
+
   const maxScroll = scrollHeight - clientHeight;
   const scrollPercent = maxScroll ? (scrollTop / maxScroll) * 100 : 0;
 
@@ -12,7 +25,14 @@ const ScrollArea = ({ scrollTop, scrollHeight, clientHeight }) => {
         className="scroll-indicator"
         style={{ height: `${scrollPercent}%` }}
       ></div>
-      {/* Future expansion: header markers, ticks, and click handlers to jump to headers */}
+      {headerPositions.map((header, index) => (
+        <HeaderNode
+          key={header.id}
+          top={header.top}
+          onClick={() => handleScrollToHeader(header.top)}
+          style={{ marginTop: index === 0 ? 0 : "10px" }}
+        />
+      ))}
     </div>
   );
 };

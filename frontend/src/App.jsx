@@ -8,6 +8,7 @@ import ScrollArea from "./components/scroll-area";
 
 function App() {
   const [html, setHtml] = useState("");
+  const [headers, setHeaders] = useState([]);
   const {
     currentFilePath,
     unsaved,
@@ -54,7 +55,10 @@ function App() {
       if (!result) return;
     }
     const content = await handleOpen();
-    if (content !== null) setHtml(content);
+    if (content !== null) {
+      setHtml(content);
+      updateHeaders(content);
+    }
   }, [unsaved, showConfirm, handleOpen]);
 
   const handleKeyDown = useCallback(
@@ -69,6 +73,21 @@ function App() {
     setUnsaved(true);
   };
 
+  const updateHeaders = (content) => {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(content, "text/html");
+    const headerElements = doc.querySelectorAll("h1, h2, h3, h4, h5, h6");
+    const headerPositions = Array.from(headerElements).map((header, index) => {
+      header.id = `header-${index}`;
+      return {
+        id: header.id,
+        top: header.offsetTop,
+      };
+    });
+    setHeaders(headerPositions);
+    setHtml(doc.body.innerHTML);
+  };
+
   useEffect(() => {
     const handleBeforeUnload = (e) => {
       if (unsaved) {
@@ -79,6 +98,30 @@ function App() {
     window.addEventListener("beforeunload", handleBeforeUnload);
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [unsaved]);
+
+  useEffect(() => {
+    updateHeaders(html);
+  }, [html]);
+
+  useEffect(() => {
+    const editor = document.getElementById("editor");
+    if (editor) {
+      const headerElements = editor.querySelectorAll("h1, h2, h3, h4, h5, h6");
+      const headerPositions = Array.from(headerElements).map(
+        (header, index) => {
+          if (!header.id) {
+            header.id = `header-${index}`;
+          }
+          return {
+            id: header.id,
+            top: header.offsetTop,
+          };
+        }
+      );
+      setHeaders(headerPositions);
+      console.log("Detected headers on startup:", headerPositions);
+    }
+  }, []);
 
   return (
     <div id="App">
@@ -117,6 +160,7 @@ function App() {
           scrollTop={scrollState.scrollTop}
           scrollHeight={scrollState.scrollHeight}
           clientHeight={scrollState.clientHeight}
+          headers={headers}
         />
       </div>
       {confirmVisible && (
