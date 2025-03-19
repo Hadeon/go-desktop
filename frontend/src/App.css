@@ -1,6 +1,7 @@
 :root {
-  --background-color: #282c34;
-  --navbar-color: #21252b;
+  --background-color: hsl(220, 13%, 18%);
+  --background-color-blue: hsl(218, 25%, 13%);
+  --navbar-color: #181e28;
   --text-color: #abb2bf;
   --button-background-color: #61afef;
   --button-hover-background-color: #528bff;
@@ -112,10 +113,9 @@
 }
 
 #editor {
-  width: 90%;
-  height: calc(100vh - 100px); /* Subtract the height of the navbar */
-  padding: 20px;
-  margin: 10px 0px 10px 0px;
+  width: 100%;
+  height: calc(100vh - 170px); /* Subtract the height of the navbar */
+  padding: 50px 25px 50px 50px;
   border: none;
   border-radius: 10px;
   background-color: var(--editor-background-color);

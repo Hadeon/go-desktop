@@ -1,0 +1,27 @@
+.scroll-area-container {
+  width: 50px;
+  background-color: #181e28;
+  position: relative;
+}
+.scroll-indicator {
+  width: 100%;
+  background-color: var(--button-background-color);
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: height 0.2s ease;
+  border-radius: 4px;
+}
+
+.header-node {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.header-node-circle {
+  width: 10px;
+  height: 10px;
+  background-color: red;
+  border-radius: 50%;
+}

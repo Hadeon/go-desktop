@@ -1,4 +1,9 @@
-export const handleHotkeys = async (e, currentFilePath, handleSave) => {
+export const handleHotkeys = async (
+  e,
+  currentFilePath,
+  handleSave,
+  updateHeaders
+) => {
   if (e.metaKey || e.ctrlKey) {
     switch (e.key) {
       case "s":
@@ -31,6 +36,7 @@ export const handleHotkeys = async (e, currentFilePath, handleSave) => {
               document.execCommand("formatBlock", false, "h1");
               document.execCommand("justifyCenter");
             }
+            updateHeaders();
           }
         }
         break;
