@@ -10,9 +10,13 @@ const ScrollArea = ({ scrollTop, scrollHeight, clientHeight, headers }) => {
   }, [headers]);
 
   const handleScrollToHeader = (top) => {
-    const editorContainer = document.getElementById("editor-container");
-    if (editorContainer) {
-      editorContainer.scrollTo({ top, behavior: "smooth" });
+    console.log("NODE CLICKED, top:", top);
+    const editor = document.getElementById("editor");
+    if (editor) {
+      editor.scrollTo({
+        top: top,
+        behavior: "smooth",
+      });
     }
   };
 
