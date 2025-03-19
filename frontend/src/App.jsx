@@ -35,6 +35,29 @@ function App() {
     }
   }, []);
 
+  const updateHeaders = () => {
+    const editor = document.getElementById("editor");
+    if (editor) {
+      const headerElements = editor.querySelectorAll("h1, h2, h3, h4, h5, h6");
+      const editorContainer = document.getElementById("editor-container");
+      const headerPositions = Array.from(headerElements).map(
+        (header, index) => {
+          if (!header.id) {
+            header.id = `header-${index}`;
+          }
+          const rect = header.getBoundingClientRect();
+          const containerRect = editorContainer.getBoundingClientRect();
+          return {
+            id: header.id,
+            top: rect.top - containerRect.top + editorContainer.scrollTop,
+          };
+        }
+      );
+      console.log("Header positions:", headerPositions);
+      setHeaders(headerPositions);
+    }
+  };
+
   const handleNew = useCallback(async () => {
     if (unsaved) {
       const result = await showConfirm(
@@ -57,7 +80,7 @@ function App() {
     const content = await handleOpen();
     if (content !== null) {
       setHtml(content);
-      updateHeaders(content);
+      updateHeaders();
     }
   }, [unsaved, showConfirm, handleOpen]);
 
@@ -73,25 +96,6 @@ function App() {
     setUnsaved(true);
   };
 
-  const updateHeaders = (content) => {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(content, "text/html");
-    const headerElements = doc.querySelectorAll("h1, h2, h3, h4, h5, h6");
-    const editorContainer = document.getElementById("editor-container");
-    const headerPositions = Array.from(headerElements).map((header, index) => {
-      header.id = `header-${index}`;
-      const rect = header.getBoundingClientRect();
-      const containerRect = editorContainer.getBoundingClientRect();
-      return {
-        id: header.id,
-        top: rect.top - containerRect.top + editorContainer.scrollTop,
-      };
-    });
-    console.log("Header positions:", headerPositions);
-    setHeaders(headerPositions);
-    setHtml(doc.body.innerHTML);
-  };
-
   useEffect(() => {
     const handleBeforeUnload = (e) => {
       if (unsaved) {
@@ -104,7 +108,7 @@ function App() {
   }, [unsaved]);
 
   useEffect(() => {
-    updateHeaders(html);
+    updateHeaders();
   }, [html]);
 
   useEffect(() => {
