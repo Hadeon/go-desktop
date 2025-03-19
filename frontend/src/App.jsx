@@ -5,6 +5,7 @@ import { handleHotkeys } from "./utils/keybindings";
 import { useFileOperations } from "./hooks/useFileOperations";
 import { useConfirm } from "./hooks/useConfirm";
 import ScrollArea from "./components/scroll-area";
+import Navbar from "./components/Navbar";
 import { CalculateStatistics } from "../wailsjs/go/main/App";
 
 function App() {
@@ -126,25 +127,13 @@ function App() {
 
   return (
     <div id="App">
-      <div id="navbar">
-        <button className="clickable" onClick={handleNew}>
-          New
-        </button>
-        <button className="clickable" onClick={handleOpenFile}>
-          Open
-        </button>
-        <button className="clickable" onClick={handleSave}>
-          Save
-        </button>
-        <button>{currentFilePath}</button>
-        {/* TEMPORARY STATISTICS */}
-        {/* WE WILL MOVE THIS ELSEWHERE, FOR NOW ITS HELPFUL TO SEE */}
-        <div>
-          <span>Words: {statistics.wordCount}</span>
-          <span>Headers: {statistics.headerCount}</span>
-          <span>Pages: {statistics.pageCount}</span>
-        </div>
-      </div>
+      <Navbar
+        handleNew={handleNew}
+        handleOpenFile={handleOpenFile}
+        handleSave={handleSave}
+        currentFilePath={currentFilePath}
+        statistics={statistics}
+      />
       <div
         id="editor-wrapper"
         style={{ display: "flex", flexDirection: "row" }}
