@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"regexp"
 	"strings"
 
 	"github.com/wailsapp/wails/v2/pkg/runtime"
@@ -102,7 +103,12 @@ func (a *App) SaveFileDialog() (string, error) {
 
 // CalculateStatistics calculates word count, number of headers, and number of pages
 func (a *App) CalculateStatistics(text string) []int {
-	wordCount := len(strings.Fields(text))
+	// Remove HTML tags
+	re := regexp.MustCompile(`<[^>]*>`)
+	cleanText := re.ReplaceAllString(text, "")
+
+	// Calculate statistics
+	wordCount := len(strings.Fields(cleanText))
 	headerCount := strings.Count(text, "<h1>") + strings.Count(text, "<h2>") + strings.Count(text, "<h3>") + strings.Count(text, "<h4>") + strings.Count(text, "<h5>") + strings.Count(text, "<h6>")
 	pageCount := (wordCount / 300) + 1 // Assuming 300 words per page
 
