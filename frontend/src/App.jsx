@@ -6,11 +6,11 @@ import { useFileOperations } from "./hooks/useFileOperations";
 import { useConfirm } from "./hooks/useConfirm";
 import { useEditorState } from "./hooks/useEditorState";
 import { useScrollTracking } from "./hooks/useScrollTracking";
+// import { useTheme } from "./hooks/useTheme";
 import ScrollArea from "./components/scroll-area";
 import Navbar from "./components/Navbar";
 
 function App() {
-  // HOOKS
   const { html, setHtml, statistics, updateStatistics } = useEditorState();
   const { scrollState, handleScroll, editorContainerRef } = useScrollTracking();
   const { confirmMessage, confirmVisible, showConfirm, confirmYes, confirmNo } =
@@ -24,7 +24,9 @@ function App() {
     updateFilePath,
   } = useFileOperations();
 
-  // NEW FILE HANDLER
+  //   const { theme, applyTheme } = useTheme();
+  //   applyTheme("oneDark");
+
   const handleNew = useCallback(async () => {
     if (unsaved) {
       const result = await showConfirm(
@@ -37,7 +39,6 @@ function App() {
     setUnsaved(false);
   }, [unsaved, showConfirm, setUnsaved, updateFilePath]);
 
-  // OPEN FILE HANDLER
   const handleOpenFile = useCallback(async () => {
     if (unsaved) {
       const result = await showConfirm(
@@ -52,7 +53,6 @@ function App() {
     }
   }, [unsaved, showConfirm, handleOpen]);
 
-  // HOTKEY HANDLING
   const handleKeyDown = useCallback(
     async (e) => {
       await handleHotkeys(
@@ -67,14 +67,12 @@ function App() {
     [handleSave, currentFilePath]
   );
 
-  // CONTENT CHANGE HANDLER
   const handleChange = (e) => {
     setHtml(e.target.value);
     setUnsaved(true);
     updateStatistics(e.target.value);
   };
 
-  // WINDOW CLOSE HANDLING
   useEffect(() => {
     const handleBeforeUnload = (e) => {
       if (unsaved) {
