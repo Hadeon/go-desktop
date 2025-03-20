@@ -37,19 +37,19 @@ To build a redistributable, production mode package, use `wails build`.
 ### v2.0
 
 - Allow saving and opening of different file formats.
-- Swap between themes, or the ability to create/import custom themes
+- [ ] Swap between themes, or the ability to create/import custom themes
 - Spellchecker
 - [x] Add a custom scroll on the right side which shows header (chapter) "nodes" you can click on to quickly autoscroll to them.
 
   - [x] Maybe show ticks for the number of pages between nodes, so you can visually see variations of chapter lengths
   - [x] Add header-node tooltip in order to see Chapter Titles
-  - [ ] Cleanup expensive functions
+  - [x] Cleanup expensive functions
+    - Duplicate hooks and functions removed and cleanedup
   - [ ] Restructure editor
 
   ## Header Specific Features and Fixes
 
-  - [ ] Make sure keybindings headers cover edge cases with duplicate ids (deleting and recreating after opening the file again)
-    - [ ] Possibly create a hash function to make sure we don't end up with duplicate keys ever
+  - [x] Make sure keybindings headers cover edge cases with duplicate ids (deleting and recreating after opening the file again)
   - [x] Filter out special characters from statistics.headerPositions.text
 
 ### v3.0
