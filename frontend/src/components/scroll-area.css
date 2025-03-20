@@ -2,21 +2,22 @@
   width: 50px;
   background-color: #181e28;
   position: relative;
-  height: 90vh; /* Make it full viewport height */
-  overflow-y: auto; /* Enable vertical scrolling */
+  height: 90vh;
+  overflow-y: visible !important;
   display: flex;
   flex-direction: column;
+  z-index: 5;
 }
 
 .scroll-indicator {
   width: 100%;
   background-color: var(--button-background-color);
-  position: fixed; /* Change to fixed position */
+  position: fixed;
   top: 0;
   left: 0;
   transition: height 0.2s ease;
   border-radius: 4px;
-  z-index: 2; /* Ensure it stays on top */
+  z-index: 2;
 }
 
 .header-node {
@@ -59,6 +60,6 @@
 .page-tick-container {
   display: flex;
   flex-direction: column;
-  min-height: 20px; /* Add minimum height */
+  min-height: 20px;
   margin: 5px 0px 5px 0px;
 }

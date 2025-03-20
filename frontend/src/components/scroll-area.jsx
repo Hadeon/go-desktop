@@ -62,6 +62,7 @@ const ScrollArea = ({ scrollTop, scrollHeight, clientHeight, statistics }) => {
               <HeaderNode
                 key={header.id}
                 text={header.page}
+                headerText={header.text}
                 onClick={() => handleScrollToHeader(header)}
                 style={{ marginTop: "10px" }}
               />

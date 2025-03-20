@@ -114,7 +114,7 @@
 
 #editor {
   width: 100%;
-  height: calc(100vh - 170px); /* Subtract the height of the navbar */
+  height: calc(100vh - 170px);
   padding: 50px 25px 50px 50px;
   border: none;
   border-radius: 10px;
@@ -124,9 +124,9 @@
   font-family: "Nunito", sans-serif;
   outline: none;
   resize: none;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   text-align: left;
   overflow-y: auto;
+  z-index: 2;
 }
 
 #editor h1 {
