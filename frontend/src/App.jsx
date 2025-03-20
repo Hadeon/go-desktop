@@ -5,7 +5,6 @@ import { handleHotkeys } from "./utils/keybindings";
 import { useFileOperations } from "./hooks/useFileOperations";
 import { useConfirm } from "./hooks/useConfirm";
 import { useEditorState } from "./hooks/useEditorState";
-import { useHeaders } from "./hooks/useHeaders";
 import { useScrollTracking } from "./hooks/useScrollTracking";
 import ScrollArea from "./components/scroll-area";
 import Navbar from "./components/Navbar";
@@ -13,7 +12,6 @@ import Navbar from "./components/Navbar";
 function App() {
   // HOOKS
   const { html, setHtml, statistics, updateStatistics } = useEditorState();
-  const { headers, updateHeaders } = useHeaders();
   const { scrollState, handleScroll, editorContainerRef } = useScrollTracking();
   const { confirmMessage, confirmVisible, showConfirm, confirmYes, confirmNo } =
     useConfirm();
@@ -50,7 +48,6 @@ function App() {
     const content = await handleOpen();
     if (content !== null) {
       setHtml(content);
-      updateHeaders();
       updateStatistics(content);
     }
   }, [unsaved, showConfirm, handleOpen]);
@@ -62,8 +59,8 @@ function App() {
         e,
         currentFilePath,
         handleSave,
-        updateHeaders,
-        setHtml
+        setHtml,
+        updateStatistics
       );
     },
     [handleSave, currentFilePath]

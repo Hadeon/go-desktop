@@ -50,7 +50,7 @@ To build a redistributable, production mode package, use `wails build`.
 
   - [ ] Make sure keybindings headers cover edge cases with duplicate ids (deleting and recreating after opening the file again)
     - [ ] Possibly create a hash function to make sure we don't end up with duplicate keys ever
-  - [ ] Filter out special characters from statistics.headerPositions.text
+  - [x] Filter out special characters from statistics.headerPositions.text
 
 ### v3.0
 

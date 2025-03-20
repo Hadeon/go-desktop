@@ -4,8 +4,8 @@ export const handleHotkeys = async (
   e,
   currentFilePath,
   handleSave,
-  updateHeaders,
-  setHtml
+  setHtml,
+  updateStatistics
 ) => {
   if (e.metaKey || e.ctrlKey) {
     switch (e.key) {
@@ -41,20 +41,12 @@ export const handleHotkeys = async (
             if (!header.id) {
               const headerId = `header-${headerCount++}`;
               header.id = headerId;
-              // Update the inner HTML with the new ID
-              newHtml = newHtml.replace(
-                `<${header.tagName.toLowerCase()}>${
-                  header.innerHTML
-                }</${header.tagName.toLowerCase()}>`,
-                `<${header.tagName.toLowerCase()} id="${headerId}">${
-                  header.innerHTML
-                }</${header.tagName.toLowerCase()}>`
-              );
+              console.log("✅ Assigned ID to new header:", headerId);
             }
           });
 
-          setHtml(newHtml); // Update React state so the changes persist
-          updateHeaders();
+          setHtml(newHtml);
+          updateStatistics(newHtml);
         }, 10);
         break;
       }
