@@ -1,3 +1,6 @@
+// Need to add more variables for some of the other components
+// where these values get mismatched
+
 export const themes = {
   oneDark: {
     "--background-color": "#272b33",
