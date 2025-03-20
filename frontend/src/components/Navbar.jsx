@@ -1,12 +1,6 @@
 import React from "react";
 
-const Navbar = ({
-  handleNew,
-  handleOpenFile,
-  handleSave,
-  currentFilePath,
-  statistics,
-}) => {
+const Navbar = ({ handleNew, handleOpenFile, handleSave, currentFilePath }) => {
   return (
     <div id="navbar">
       <button className="clickable" onClick={handleNew}>
