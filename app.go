@@ -7,6 +7,8 @@ import (
 	"regexp"
 	"strings"
 
+	"golang.org/x/net/html"
+
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
@@ -125,9 +127,13 @@ func (a *App) CalculateStatistics(text string) map[string]interface{} {
 			continue
 		}
 
-		headerTag := text[match[2]:match[3]] // Captures "h1", "h2", etc.
+		headerTag := text[match[2]:match[3]]  // Captures "h1", "h2", etc.
 		headerAttrs := text[match[4]:match[5]] // Captures attributes inside the tag
-		headerText := text[match[6]:match[7]] // Captures the inner text of the header
+		headerText := text[match[6]:match[7]]  // Captures the inner text of the header
+
+		// **Normalize Header Text**
+		headerText = html.UnescapeString(headerText) // Decode HTML entities
+		headerText = strings.TrimSpace(headerText)  // Trim extra spaces
 
 		// Extract the ID attribute using regex
 		idRegex := regexp.MustCompile(`id="([^"]+)"`)
@@ -153,8 +159,6 @@ func (a *App) CalculateStatistics(text string) map[string]interface{} {
 		})
 	}
 
-	fmt.Printf("📊 Final header positions: %v\n", headerPositions)
-
 	return map[string]interface{}{
 		"wordCount":       wordCount,
 		"headerCount":     len(headerPositions),
@@ -162,4 +166,3 @@ func (a *App) CalculateStatistics(text string) map[string]interface{} {
 		"headerPositions": headerPositions,
 	}
 }
-

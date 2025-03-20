@@ -22,8 +22,8 @@ func main() {
 		Title:            "go-writing-app",
 		Width:            1024,
 		Height:           768,
-		MinWidth:         800, // ✅ Set min width
-		MinHeight:        600, // ✅ Set min height
+		MinWidth:         800, 
+		MinHeight:        600, 
 		AssetServer: &assetserver.Options{
 			Assets: assets,
 		},
