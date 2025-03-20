@@ -60,7 +60,8 @@ function App() {
         currentFilePath,
         handleSave,
         setHtml,
-        updateStatistics
+        updateStatistics,
+        statistics
       );
     },
     [handleSave, currentFilePath]

@@ -1,11 +1,19 @@
-let headerCount = 0; // Track assigned header IDs
+// Function to generate a unique random ID
+const generateUniqueHeaderId = (existingIds) => {
+  let newId;
+  do {
+    newId = `header-${Math.random().toString(36).substr(2, 9)}`;
+  } while (existingIds.has(newId));
+  return newId;
+};
 
 export const handleHotkeys = async (
   e,
   currentFilePath,
   handleSave,
   setHtml,
-  updateStatistics
+  updateStatistics,
+  statistics
 ) => {
   if (e.metaKey || e.ctrlKey) {
     switch (e.key) {
@@ -37,11 +45,17 @@ export const handleHotkeys = async (
           let newHtml = editor.innerHTML;
           const headers = editor.querySelectorAll("h1, h2, h3, h4, h5, h6");
 
+          // Use statistics to check for existing header IDs
+          const existingIds = new Set(
+            statistics.headerPositions.map((h) => h.id)
+          );
+
           headers.forEach((header) => {
             if (!header.id) {
-              const headerId = `header-${headerCount++}`;
+              const headerId = generateUniqueHeaderId(existingIds);
               header.id = headerId;
-              console.log("✅ Assigned ID to new header:", headerId);
+              console.log("✅ Assigned Unique ID:", headerId);
+              existingIds.add(headerId);
             }
           });
 
