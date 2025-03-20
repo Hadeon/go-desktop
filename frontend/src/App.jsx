@@ -68,10 +68,6 @@ function App() {
   const updateStatistics = async (text) => {
     const stats = await CalculateStatistics(text);
 
-    if (stats.modifiedText) {
-      setHtml(stats.modifiedText);
-    }
-
     setStatistics(stats);
   };
 
@@ -110,7 +106,13 @@ function App() {
 
   const handleKeyDown = useCallback(
     async (e) => {
-      await handleHotkeys(e, currentFilePath, handleSave, updateHeaders);
+      await handleHotkeys(
+        e,
+        currentFilePath,
+        handleSave,
+        updateHeaders,
+        setHtml
+      );
     },
     [handleSave, currentFilePath]
   );
@@ -171,7 +173,6 @@ function App() {
           scrollTop={scrollState.scrollTop}
           scrollHeight={scrollState.scrollHeight}
           clientHeight={scrollState.clientHeight}
-          headers={statistics.headerPositions}
           statistics={statistics}
         />
       </div>

@@ -2,14 +2,10 @@ import React, { useEffect, useState } from "react";
 import "./scroll-area.css";
 import HeaderNode from "./header-node";
 
-const ScrollArea = ({
-  scrollTop,
-  scrollHeight,
-  clientHeight,
-  headers,
-  statistics,
-}) => {
+const ScrollArea = ({ scrollTop, scrollHeight, clientHeight, statistics }) => {
   const [pageTicks, setPageTicks] = useState([]);
+
+  console.log("SCROLL AREA: ", statistics.headerPositions);
 
   useEffect(() => {
     // Create an array of pages with either headers or ticks
@@ -20,7 +16,8 @@ const ScrollArea = ({
     }));
 
     // Assign headers to their respective pages (from Go)
-    headers.forEach((header) => {
+    statistics.headerPositions.forEach((header) => {
+      console.log("HEADER!  :  ", header);
       const pageIndex = header.page - 1; // Convert 1-based to 0-based index
       if (ticks[pageIndex]) {
         ticks[pageIndex].headers.push(header);
@@ -28,7 +25,7 @@ const ScrollArea = ({
     });
 
     setPageTicks(ticks);
-  }, [statistics.pageCount, headers]);
+  }, [statistics.pageCount, statistics.headerPositions]);
 
   const handleScrollToPage = (page) => {
     const editor = document.getElementById("editor");

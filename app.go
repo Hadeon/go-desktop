@@ -21,7 +21,6 @@ func NewApp() *App {
 }
 
 // startup is called when the app starts. The context is saved
-// so we can call the runtime methods
 func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
 }
@@ -114,25 +113,35 @@ func (a *App) CalculateStatistics(text string) map[string]interface{} {
 	// Track headers while iterating through the words
 	headerPositions := []map[string]interface{}{}
 
-	// Regex to match headers
+	// Regex to match headers (captures tag name, attributes, and inner text)
 	headerRe := regexp.MustCompile(`<(h[1-6])([^>]*)>(.*?)</h[1-6]>`)
 
-	// Replace headers in text and store them in headerPositions
-	modifiedText := headerRe.ReplaceAllStringFunc(text, func(header string) string {
-		match := headerRe.FindStringSubmatch(header)
-		if len(match) < 4 {
-			return header // If no proper match, return unchanged
+	// Find all headers in the text
+	matches := headerRe.FindAllStringSubmatchIndex(text, -1)
+
+	for _, match := range matches {
+		if len(match) < 8 {
+			fmt.Println("⚠️ Skipping invalid match due to incorrect indices:", match)
+			continue
 		}
 
-		headerTag := match[1]  // h1, h2, etc.
-		headerAttrs := match[2] // Any existing attributes
-		headerText := match[3]  // Inner text
+		headerTag := text[match[2]:match[3]] // Captures "h1", "h2", etc.
+		headerAttrs := text[match[4]:match[5]] // Captures attributes inside the tag
+		headerText := text[match[6]:match[7]] // Captures the inner text of the header
 
-		// Generate a unique header ID
-		headerId := fmt.Sprintf("%s-%d", headerTag, len(headerPositions))
+		// Extract the ID attribute using regex
+		idRegex := regexp.MustCompile(`id="([^"]+)"`)
+		idMatch := idRegex.FindStringSubmatch(headerAttrs)
+
+		headerId := ""
+		if len(idMatch) > 1 {
+			headerId = idMatch[1] // Extracts the ID from `id="some-id"`
+		} else {
+			headerId = fmt.Sprintf("%s-%d", headerTag, len(headerPositions)) // Fallback ID
+		}
 
 		// Find word position to determine page number
-		wordsBeforeHeader := len(strings.Fields(cleanText[:strings.Index(text, header)]))
+		wordsBeforeHeader := len(strings.Fields(cleanText[:match[0]]))
 		headerPage := (wordsBeforeHeader / wordsPerPage) + 1
 
 		// Store header info
@@ -142,10 +151,7 @@ func (a *App) CalculateStatistics(text string) map[string]interface{} {
 			"text": headerText,
 			"page": headerPage,
 		})
-
-		// Return modified header with ID inserted
-		return fmt.Sprintf(`<%s id="%s"%s>%s</%s>`, headerTag, headerId, headerAttrs, headerText, headerTag)
-	})
+	}
 
 	fmt.Printf("📊 Final header positions: %v\n", headerPositions)
 
@@ -154,6 +160,6 @@ func (a *App) CalculateStatistics(text string) map[string]interface{} {
 		"headerCount":     len(headerPositions),
 		"pageCount":       pageCount,
 		"headerPositions": headerPositions,
-		"modifiedText":    modifiedText,
 	}
 }
+

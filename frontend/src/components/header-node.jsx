@@ -6,7 +6,7 @@ const HeaderNode = ({ key, text, onClick, style }) => {
       onClick={onClick}
       style={{ ...style, cursor: "pointer" }}
     >
-      <div className="header-node-circle"></div>
+      <div className="header-node-circle">{text}</div>
     </div>
   );
 };
