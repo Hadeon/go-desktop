@@ -2,20 +2,48 @@ import React, { useEffect, useState } from "react";
 import "./scroll-area.css";
 import HeaderNode from "./header-node";
 
-const ScrollArea = ({ scrollTop, scrollHeight, clientHeight, headers }) => {
-  const [headerPositions, setHeaderPositions] = useState([]);
+const ScrollArea = ({ scrollTop, scrollHeight, clientHeight, statistics }) => {
+  const [pageTicks, setPageTicks] = useState([]);
+
+  console.log("SCROLL AREA: ", statistics.headerPositions);
 
   useEffect(() => {
-    setHeaderPositions(headers);
-  }, [headers]);
+    // Create an array of pages with either headers or ticks
+    const ticks = Array.from({ length: statistics.pageCount }, (_, index) => ({
+      id: `page-${index + 1}`,
+      page: index + 1,
+      headers: [],
+    }));
 
-  const handleScrollToHeader = (top) => {
-    console.log("NODE CLICKED, top:", top);
+    // Assign headers to their respective pages (from Go)
+    statistics.headerPositions.forEach((header) => {
+      console.log("HEADER!  :  ", header);
+      const pageIndex = header.page - 1; // Convert 1-based to 0-based index
+      if (ticks[pageIndex]) {
+        ticks[pageIndex].headers.push(header);
+      }
+    });
+
+    setPageTicks(ticks);
+  }, [statistics.pageCount, statistics.headerPositions]);
+
+  const handleScrollToPage = (page) => {
     const editor = document.getElementById("editor");
     if (editor) {
+      const pageHeight = scrollHeight / statistics.pageCount;
       editor.scrollTo({
-        top: top,
+        top: pageHeight * (page - 1),
         behavior: "smooth",
+      });
+    }
+  };
+
+  const handleScrollToHeader = (header) => {
+    const headerElement = document.getElementById(header.id);
+    if (headerElement) {
+      headerElement.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
       });
     }
   };
@@ -25,17 +53,29 @@ const ScrollArea = ({ scrollTop, scrollHeight, clientHeight, headers }) => {
 
   return (
     <div className="scroll-area-container">
-      <div
-        className="scroll-indicator"
-        style={{ height: `${scrollPercent}%` }}
-      ></div>
-      {headerPositions.map((header, index) => (
-        <HeaderNode
-          key={header.id}
-          top={header.top}
-          onClick={() => handleScrollToHeader(header.top)}
-          style={{ marginTop: index === 0 ? 0 : "10px" }}
-        />
+      {/* Eventually want scroll */}
+
+      {pageTicks.map((tick) => (
+        <div key={tick.id} className="page-tick-container">
+          {tick.headers.length > 0 ? (
+            tick.headers.map((header) => (
+              <HeaderNode
+                key={header.id}
+                text={header.page}
+                headerText={header.text}
+                onClick={() => handleScrollToHeader(header)}
+                style={{ marginTop: "10px" }}
+              />
+            ))
+          ) : (
+            <div
+              className="page-tick"
+              onClick={() => handleScrollToPage(tick.page)}
+            >
+              {tick.page}
+            </div>
+          )}
+        </div>
       ))}
     </div>
   );

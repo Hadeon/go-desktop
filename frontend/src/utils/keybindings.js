@@ -1,8 +1,19 @@
+// Function to generate a unique random ID
+const generateUniqueHeaderId = (existingIds) => {
+  let newId;
+  do {
+    newId = `header-${Math.random().toString(36).substr(2, 9)}`;
+  } while (existingIds.has(newId));
+  return newId;
+};
+
 export const handleHotkeys = async (
   e,
   currentFilePath,
   handleSave,
-  updateHeaders
+  setHtml,
+  updateStatistics,
+  statistics
 ) => {
   if (e.metaKey || e.ctrlKey) {
     switch (e.key) {
@@ -23,23 +34,36 @@ export const handleHotkeys = async (
         e.preventDefault();
         document.execCommand("underline");
         break;
-      case "l":
+      case "l": {
         e.preventDefault();
-        {
-          const selection = window.getSelection();
-          if (selection.rangeCount > 0) {
-            const range = selection.getRangeAt(0);
-            const parentElement = range.commonAncestorContainer.parentElement;
-            if (parentElement.tagName === "H1") {
-              document.execCommand("formatBlock", false, "p");
-            } else {
-              document.execCommand("formatBlock", false, "h1");
-              document.execCommand("justifyCenter");
+        document.execCommand("formatBlock", false, "h1");
+
+        setTimeout(() => {
+          const editor = document.getElementById("editor");
+          if (!editor) return;
+
+          let newHtml = editor.innerHTML;
+          const headers = editor.querySelectorAll("h1, h2, h3, h4, h5, h6");
+
+          // Use statistics to check for existing header IDs
+          const existingIds = new Set(
+            statistics.headerPositions.map((h) => h.id)
+          );
+
+          headers.forEach((header) => {
+            if (!header.id) {
+              const headerId = generateUniqueHeaderId(existingIds);
+              header.id = headerId;
+              console.log("✅ Assigned Unique ID:", headerId);
+              existingIds.add(headerId);
             }
-            updateHeaders();
-          }
-        }
+          });
+
+          setHtml(newHtml);
+          updateStatistics(newHtml);
+        }, 10);
         break;
+      }
       case "H":
         if (e.shiftKey) {
           e.preventDefault();

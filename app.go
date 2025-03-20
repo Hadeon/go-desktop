@@ -4,6 +4,10 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"regexp"
+	"strings"
+
+	"golang.org/x/net/html"
 
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
@@ -19,14 +23,8 @@ func NewApp() *App {
 }
 
 // startup is called when the app starts. The context is saved
-// so we can call the runtime methods
 func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
-}
-
-// Greet returns a greeting for the given name
-func (a *App) Greet(name string) string {
-	return fmt.Sprintf("Hello %s, It's show time!", name)
 }
 
 // SaveText saves the given text to a file
@@ -46,7 +44,6 @@ func (a *App) OpenText(filename string) (string, error) {
 // SaveCurrentFile saves text directly to an existing file
 func (a *App) SaveCurrentFile(filename, text string) error {
 	fmt.Printf("SaveCurrentFile called with filename: %s\n", filename)
-	fmt.Printf("Content to save (first 100 chars): %.100s...\n", text)
 	
 	if filename == "" {
 		return fmt.Errorf("no filename provided")
@@ -97,4 +94,75 @@ func (a *App) SaveFileDialog() (string, error) {
 		return "", err
 	}
 	return filename, nil
+}
+
+// CalculateStatistics calculates word count, number of headers, and number of pages
+func (a *App) CalculateStatistics(text string) map[string]interface{} {
+	fmt.Println("🚀 CalculateStatistics called")
+
+	// Remove HTML tags for word counting
+	re := regexp.MustCompile(`<[^>]*>`)
+	cleanText := re.ReplaceAllString(text, "")
+
+	// Split the cleaned text into words
+	words := strings.Fields(cleanText)
+	wordCount := len(words)
+
+	// Define words per page
+	wordsPerPage := 300
+	pageCount := (wordCount / wordsPerPage) + 1
+
+	// Track headers while iterating through the words
+	headerPositions := []map[string]interface{}{}
+
+	// Regex to match headers (captures tag name, attributes, and inner text)
+	headerRe := regexp.MustCompile(`<(h[1-6])([^>]*)>(.*?)</h[1-6]>`)
+
+	// Find all headers in the text
+	matches := headerRe.FindAllStringSubmatchIndex(text, -1)
+
+	for _, match := range matches {
+		if len(match) < 8 {
+			fmt.Println("⚠️ Skipping invalid match due to incorrect indices:", match)
+			continue
+		}
+
+		headerTag := text[match[2]:match[3]]  // Captures "h1", "h2", etc.
+		headerAttrs := text[match[4]:match[5]] // Captures attributes inside the tag
+		headerText := text[match[6]:match[7]]  // Captures the inner text of the header
+
+		// **Normalize Header Text**
+		headerText = html.UnescapeString(headerText) // Decode HTML entities
+		headerText = strings.TrimSpace(headerText)  // Trim extra spaces
+
+		// Extract the ID attribute using regex
+		idRegex := regexp.MustCompile(`id="([^"]+)"`)
+		idMatch := idRegex.FindStringSubmatch(headerAttrs)
+
+		headerId := ""
+		if len(idMatch) > 1 {
+			headerId = idMatch[1] // Extracts the ID from `id="some-id"`
+		} else {
+			headerId = fmt.Sprintf("%s-%d", headerTag, len(headerPositions)) // Fallback ID
+		}
+
+		// Find word position to determine page number
+		wordsBeforeHeader := len(strings.Fields(cleanText[:match[0]]))
+		headerPage := (wordsBeforeHeader / wordsPerPage) + 1
+
+		// Store header info
+		headerPositions = append(headerPositions, map[string]interface{}{
+			"id":   headerId,
+			"tag":  headerTag,
+			"text": headerText,
+			"page": headerPage,
+		})
+	}
+
+	return map[string]interface{}{
+		"wordCount":       wordCount,
+		"headerCount":     len(headerPositions),
+		"pageCount":       pageCount,
+		"headerPositions": headerPositions,
+	}
 }

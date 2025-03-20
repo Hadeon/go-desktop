@@ -1,14 +1,20 @@
-import { useState, useCallback, useRef, useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import ContentEditable from "react-contenteditable";
 import "./App.css";
 import { handleHotkeys } from "./utils/keybindings";
 import { useFileOperations } from "./hooks/useFileOperations";
 import { useConfirm } from "./hooks/useConfirm";
+import { useEditorState } from "./hooks/useEditorState";
+import { useScrollTracking } from "./hooks/useScrollTracking";
 import ScrollArea from "./components/scroll-area";
+import Navbar from "./components/Navbar";
 
 function App() {
-  const [html, setHtml] = useState("");
-  const [headers, setHeaders] = useState([]);
+  // HOOKS
+  const { html, setHtml, statistics, updateStatistics } = useEditorState();
+  const { scrollState, handleScroll, editorContainerRef } = useScrollTracking();
+  const { confirmMessage, confirmVisible, showConfirm, confirmYes, confirmNo } =
+    useConfirm();
   const {
     currentFilePath,
     unsaved,
@@ -17,47 +23,8 @@ function App() {
     handleOpen,
     updateFilePath,
   } = useFileOperations();
-  const { confirmMessage, confirmVisible, showConfirm, confirmYes, confirmNo } =
-    useConfirm();
 
-  const [scrollState, setScrollState] = useState({
-    scrollTop: 0,
-    scrollHeight: 0,
-    clientHeight: 0,
-  });
-  const editorContainerRef = useRef(null);
-
-  const handleScroll = useCallback(() => {
-    if (editorContainerRef.current) {
-      const { scrollTop, scrollHeight, clientHeight } =
-        editorContainerRef.current;
-      setScrollState({ scrollTop, scrollHeight, clientHeight });
-    }
-  }, []);
-
-  const updateHeaders = () => {
-    const editor = document.getElementById("editor");
-    if (editor) {
-      const headerElements = editor.querySelectorAll("h1, h2, h3, h4, h5, h6");
-      const editorContainer = document.getElementById("editor-container");
-      const headerPositions = Array.from(headerElements).map(
-        (header, index) => {
-          if (!header.id) {
-            header.id = `header-${index}`;
-          }
-          const rect = header.getBoundingClientRect();
-          const containerRect = editorContainer.getBoundingClientRect();
-          return {
-            id: header.id,
-            top: rect.top - containerRect.top + editorContainer.scrollTop,
-          };
-        }
-      );
-      console.log("Header positions:", headerPositions);
-      setHeaders(headerPositions);
-    }
-  };
-
+  // NEW FILE HANDLER
   const handleNew = useCallback(async () => {
     if (unsaved) {
       const result = await showConfirm(
@@ -70,6 +37,7 @@ function App() {
     setUnsaved(false);
   }, [unsaved, showConfirm, setUnsaved, updateFilePath]);
 
+  // OPEN FILE HANDLER
   const handleOpenFile = useCallback(async () => {
     if (unsaved) {
       const result = await showConfirm(
@@ -80,22 +48,33 @@ function App() {
     const content = await handleOpen();
     if (content !== null) {
       setHtml(content);
-      updateHeaders();
+      updateStatistics(content);
     }
   }, [unsaved, showConfirm, handleOpen]);
 
+  // HOTKEY HANDLING
   const handleKeyDown = useCallback(
     async (e) => {
-      await handleHotkeys(e, currentFilePath, handleSave, updateHeaders);
+      await handleHotkeys(
+        e,
+        currentFilePath,
+        handleSave,
+        setHtml,
+        updateStatistics,
+        statistics
+      );
     },
     [handleSave, currentFilePath]
   );
 
+  // CONTENT CHANGE HANDLER
   const handleChange = (e) => {
     setHtml(e.target.value);
     setUnsaved(true);
+    updateStatistics(e.target.value);
   };
 
+  // WINDOW CLOSE HANDLING
   useEffect(() => {
     const handleBeforeUnload = (e) => {
       if (unsaved) {
@@ -107,24 +86,15 @@ function App() {
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [unsaved]);
 
-  useEffect(() => {
-    updateHeaders();
-  }, [currentFilePath]);
-
   return (
     <div id="App">
-      <div id="navbar">
-        <button className="clickable" onClick={handleNew}>
-          New
-        </button>
-        <button className="clickable" onClick={handleOpenFile}>
-          Open
-        </button>
-        <button className="clickable" onClick={handleSave}>
-          Save
-        </button>
-        <button>{currentFilePath}</button>
-      </div>
+      <Navbar
+        handleNew={handleNew}
+        handleOpenFile={handleOpenFile}
+        handleSave={handleSave}
+        currentFilePath={currentFilePath}
+        statistics={statistics}
+      />
       <div
         id="editor-wrapper"
         style={{ display: "flex", flexDirection: "row" }}
@@ -132,7 +102,6 @@ function App() {
         <div
           id="editor-container"
           ref={editorContainerRef}
-          onScroll={handleScroll}
           style={{ flex: 1, overflowY: "auto" }}
         >
           <ContentEditable
@@ -140,6 +109,7 @@ function App() {
             html={html}
             onChange={handleChange}
             onKeyDown={handleKeyDown}
+            onScroll={handleScroll}
             placeholder="Start writing here..."
             className="editable-content"
           />
@@ -148,7 +118,7 @@ function App() {
           scrollTop={scrollState.scrollTop}
           scrollHeight={scrollState.scrollHeight}
           clientHeight={scrollState.clientHeight}
-          headers={headers}
+          statistics={statistics}
         />
       </div>
       {confirmVisible && (

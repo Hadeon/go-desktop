@@ -37,18 +37,30 @@ To build a redistributable, production mode package, use `wails build`.
 ### v2.0
 
 - Allow saving and opening of different file formats.
-- Swap between themes, or the ability to create/import custom themes
+- [ ] Swap between themes, or the ability to create/import custom themes
 - Spellchecker
-- [ ] Add a custom scroll on the right side which shows header (chapter) "nodes" you can click on to quickly autoscroll to them.
-  - [ ] Maybe show ticks for the number of pages between nodes, so you can visually see variations of chapter lengths
+- [x] Add a custom scroll on the right side which shows header (chapter) "nodes" you can click on to quickly autoscroll to them.
+
+  - [x] Maybe show ticks for the number of pages between nodes, so you can visually see variations of chapter lengths
+  - [x] Add header-node tooltip in order to see Chapter Titles
+  - [x] Cleanup expensive functions
+    - Duplicate hooks and functions removed and cleanedup
+  - [ ] Restructure editor
+
+  ## Header Specific Features and Fixes
+
+  - [x] Make sure keybindings headers cover edge cases with duplicate ids (deleting and recreating after opening the file again)
+  - [x] Filter out special characters from statistics.headerPositions.text
 
 ### v3.0
 
 - TBD
-  - Possibly integrate some very basic local AI for proofreading / edits
+  - Possibly integrate some very basic local AI for proofreading / summaries
   - Possibly create a graph or "node" viewer to link ideas
     - Plot points, characters, etc.
       - Think a lightweight Obsidian graph but more like a "cork board" with stripped down features
-  - Possibly a very basic Spotify / Apple Music player which doesn't allow music controls (to reduce distractions) but can play playlists or stations. (Play / Pause being the only options outside of station or playlist selection)
+  - Versioning for specific chapters
+    - Ability to "swap" between saved chapters
+      - Need a special project format if this is the case, rather than saving to a traditional file format
 
 ### Changelog
