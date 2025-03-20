@@ -53,10 +53,7 @@ const ScrollArea = ({ scrollTop, scrollHeight, clientHeight, statistics }) => {
 
   return (
     <div className="scroll-area-container">
-      <div
-        className="scroll-indicator"
-        style={{ height: `${scrollPercent}%` }}
-      ></div>
+      {/* Eventually want scroll */}
 
       {pageTicks.map((tick) => (
         <div key={tick.id} className="page-tick-container">

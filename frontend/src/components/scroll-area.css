@@ -21,20 +21,24 @@
 
 .header-node {
   display: flex;
-  justify-content: center;
   align-items: center;
-  min-height: 20px; /* Add minimum height */
+  justify-content: center;
 }
 
 .header-node-circle {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 20px;
-  height: 20px;
+  width: 25px;
+  height: 25px;
   background-color: var(--input-hover-background-color);
   border-radius: 50%;
-  margin-bottom: 20px;
+  margin-top: -10px;
+  font-size: 12px;
+  justify-content: center;
+  align-content: center;
+}
+
+.header-node-circle:hover {
+  background-color: var(--button-hover-background-color);
+  color: var(--input-hover-background-color);
 }
 
 .page-tick {
@@ -55,6 +59,6 @@
 .page-tick-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
   min-height: 20px; /* Add minimum height */
+  margin: 5px 0px 5px 0px;
 }
