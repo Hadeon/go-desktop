@@ -39,14 +39,13 @@ To build a redistributable, production mode package, use `wails build`.
 - Allow saving and opening of different file formats.
 - Swap between themes, or the ability to create/import custom themes
 - Spellchecker
-- [ ] Add a custom scroll on the right side which shows header (chapter) "nodes" you can click on to quickly autoscroll to them.
+- [x] Add a custom scroll on the right side which shows header (chapter) "nodes" you can click on to quickly autoscroll to them.
   - [x] Maybe show ticks for the number of pages between nodes, so you can visually see variations of chapter lengths
+  - [ ] Add header-node tooltip in order to see Chapter Titles
   - [ ] Cleanup expensive functions
   - [ ] Restructure editor
   - [ ] Make sure keybindings headers cover edge cases with duplicate ids (deleting and recreating after opening the file again)
     - [ ] Possibly create a hash function to make sure we don't end up with duplicate keys ever
-  - [ ] See if scrolling to specific pages is possible
-    - THOUGHT: It's not essential as Chapter scroll is what we really need
 
 ### v3.0
 
