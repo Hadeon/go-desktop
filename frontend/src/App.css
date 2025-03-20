@@ -52,10 +52,21 @@
     border: none;
     color: var(--text-color);
     font-family: "Nunito", sans-serif;
+    padding-top: 10px;
     font-size: 1rem;
   }
   button:hover {
     text-decoration: underline;
+  }
+
+  #navbar button:hover svg {
+    color: var(--button-hover-background-color);
+  }
+  #settings-button {
+    margin-left: auto;
+    margin-right: 0.75rem;
+    display: flex;
+    align-items: center;
   }
 }
 

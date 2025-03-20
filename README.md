@@ -69,3 +69,5 @@ To build a redistributable, production mode package, use `wails build`.
       - Need a special project format if this is the case, rather than saving to a traditional file format
 
 ### Changelog
+
+_Not needed yet. Will begin once the roadmap is complete._

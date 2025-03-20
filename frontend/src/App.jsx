@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import ContentEditable from "react-contenteditable";
 import "./App.css";
 import { handleHotkeys } from "./utils/keybindings";
@@ -9,10 +9,13 @@ import { useScrollTracking } from "./hooks/useScrollTracking";
 // import { useTheme } from "./hooks/useTheme";
 import ScrollArea from "./components/scroll-area";
 import Navbar from "./components/Navbar";
+import SettingsModal from "./components/settings-modal";
 
 function App() {
   const { html, setHtml, statistics, updateStatistics } = useEditorState();
   const { scrollState, handleScroll, editorContainerRef } = useScrollTracking();
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const toggleSettings = () => setSettingsOpen((prev) => !prev);
   const { confirmMessage, confirmVisible, showConfirm, confirmYes, confirmNo } =
     useConfirm();
   const {
@@ -92,6 +95,7 @@ function App() {
         handleSave={handleSave}
         currentFilePath={currentFilePath}
         statistics={statistics}
+        onSettingsClick={toggleSettings}
       />
       <div
         id="editor-wrapper"
@@ -128,6 +132,7 @@ function App() {
           </div>
         </div>
       )}
+      {settingsOpen && <SettingsModal onClose={() => setSettingsOpen(false)} />}
     </div>
   );
 }
