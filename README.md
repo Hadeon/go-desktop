@@ -53,7 +53,7 @@ To build a redistributable, production mode package, use `wails build`.
   - [x] Add header-node tooltip in order to see Chapter Titles
   - [x] Cleanup expensive functions
     - [x] hooks and functions removed and cleaned up
-  - [ ] Restructure editor
+  - [x] Restructure editor
 
   ## Header Specific Features and Fixes
 
