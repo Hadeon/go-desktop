@@ -42,7 +42,8 @@ To build a redistributable, production mode package, use `wails build`.
 
 ### v2.0
 
-- [ ] Allow saving and opening of different file formats.
+- [x] Allow opening of different file formats.
+- [x] Add Save As
 - [x] Swap between themes
   - [x] Alt. theme values set
   - [x] Add component to swap themes
@@ -51,7 +52,7 @@ To build a redistributable, production mode package, use `wails build`.
   - [x] Maybe show ticks for the number of pages between nodes, so you can visually see variations of chapter lengths
   - [x] Add header-node tooltip in order to see Chapter Titles
   - [x] Cleanup expensive functions
-    - Duplicate hooks and functions removed and cleanedup
+    - [x] hooks and functions removed and cleaned up
   - [ ] Restructure editor
 
   ## Header Specific Features and Fixes

@@ -91,6 +91,10 @@ func (a *App) SaveCurrentFile(filename, text string) error {
 	return nil
 }
 
+// TODO: SaveAs isn't giving file format options
+// --- Debating keeping a base .txt or .html master file and having "export" options for other formats
+// --- Similar to Pages on Mac
+
 // SaveAs saves the current text to a new file (copy) under a different name or format.
 func (a *App) SaveAs(text string) (string, error) {
 	// Open the save dialog for the user to choose a new name/format.
