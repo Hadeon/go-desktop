@@ -20,7 +20,11 @@ const Navbar = ({
       <button className="clickable" onClick={handleSave}>
         <FiSave size={18} color="var(--button-background-color)" />
       </button>
-      <button>{currentFilePath}</button>
+      <text
+        style={{ marginLeft: "2rem", userSelect: "none", cursor: "default" }}
+      >
+        {currentFilePath}
+      </text>
       {/* TEMPORARY STATISTICS */}
       {/* WE WILL MOVE THIS ELSEWHERE, FOR NOW ITS HELPFUL TO SEE */}
       {/* <div>
