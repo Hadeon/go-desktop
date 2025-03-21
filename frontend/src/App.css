@@ -52,7 +52,7 @@
     border: none;
     color: var(--text-color);
     font-family: "Nunito", sans-serif;
-    padding-top: 10px;
+    padding-top: 5px;
     font-size: 1rem;
   }
   button:hover {
@@ -125,8 +125,10 @@
 
 #editor {
   width: 100%;
-  height: calc(100vh - 170px);
-  padding: 10%;
+  max-width: 1000px;
+  height: calc(100vh - 150px);
+  padding: 5% 15% 0% 15%;
+  margin-bottom: 10px;
   border: none;
   border-radius: 10px;
   background-color: var(--editor-background-color);
