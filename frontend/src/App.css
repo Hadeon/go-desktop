@@ -126,7 +126,7 @@
 #editor {
   width: 100%;
   height: calc(100vh - 170px);
-  padding: 50px 25px 50px 50px;
+  padding: 10%;
   border: none;
   border-radius: 10px;
   background-color: var(--editor-background-color);
@@ -162,7 +162,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(40, 44, 52, 0.8);
+  background: var(--background-color-blue);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -170,20 +170,20 @@
 }
 
 .modal {
-  background: #21252b;
-  border: 1px solid #61afef;
+  background: var(--background-color);
+  border: 1px solid var(--navbar-color);
   border-radius: 8px;
   padding: 24px;
   text-align: center;
-  color: #abb2bf;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  color: var(--text-color);
+  box-shadow: 0 4px 8px var(--editor-background-color);
 }
 
 .modal button {
-  background: #61afef;
+  background: var(--button-background-color);
   border: none;
   border-radius: 4px;
-  color: #282c34;
+  color: var(--button-text-color);
   padding: 8px 16px;
   margin: 8px;
   cursor: pointer;
@@ -192,5 +192,5 @@
 }
 
 .modal button:hover {
-  background: #528bff;
+  background: var(--button-hover-background-color);
 }

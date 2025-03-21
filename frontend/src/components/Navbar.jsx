@@ -12,13 +12,13 @@ const Navbar = ({
   return (
     <div id="navbar">
       <button className="clickable" onClick={handleNew}>
-        <FiFilePlus size={18} color="var(--text-color)" />
+        <FiFilePlus size={18} color="var(--button-background-color)" />
       </button>
       <button className="clickable" onClick={handleOpenFile}>
-        <FiFolder size={18} color="var(--text-color)" />
+        <FiFolder size={18} color="var(--button-background-color)" />
       </button>
       <button className="clickable" onClick={handleSave}>
-        <FiSave size={18} color="var(--text-color)" />
+        <FiSave size={18} color="var(--button-background-color)" />
       </button>
       <button>{currentFilePath}</button>
       {/* TEMPORARY STATISTICS */}
@@ -29,7 +29,7 @@ const Navbar = ({
         <span>Pages: {statistics.pageCount}</span>
       </div> */}
       <button id="settings-button" onClick={onSettingsClick}>
-        <FiSettings size={18} color="var(--text-color)" />
+        <FiSettings size={18} color="var(--button-background-color)" />
       </button>
     </div>
   );

@@ -6,7 +6,7 @@ import { useFileOperations } from "./hooks/useFileOperations";
 import { useConfirm } from "./hooks/useConfirm";
 import { useEditorState } from "./hooks/useEditorState";
 import { useScrollTracking } from "./hooks/useScrollTracking";
-// import { useTheme } from "./hooks/useTheme";
+import { useTheme } from "./hooks/useTheme";
 import ScrollArea from "./components/scroll-area";
 import Navbar from "./components/Navbar";
 import SettingsModal from "./components/settings-modal";
@@ -27,7 +27,7 @@ function App() {
     updateFilePath,
   } = useFileOperations();
 
-  //   const { theme, applyTheme } = useTheme();
+  const { theme, applyTheme } = useTheme();
   //   applyTheme("oneDark");
 
   const handleNew = useCallback(async () => {
@@ -86,6 +86,10 @@ function App() {
     window.addEventListener("beforeunload", handleBeforeUnload);
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [unsaved]);
+
+  useEffect(() => {
+    applyTheme(theme);
+  }, [theme]);
 
   return (
     <div id="App">
