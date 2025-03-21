@@ -16,6 +16,7 @@ const Navbar = ({
   statistics,
   onSettingsClick,
 }) => {
+  // statistics temporary for debuggng purposes
   return (
     <div id="navbar">
       <button className="clickable" onClick={handleNew}>
