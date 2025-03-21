@@ -14,6 +14,10 @@ export function OpenText(arg1) {
   return window['go']['main']['App']['OpenText'](arg1);
 }
 
+export function SaveAs(arg1) {
+  return window['go']['main']['App']['SaveAs'](arg1);
+}
+
 export function SaveCurrentFile(arg1, arg2) {
   return window['go']['main']['App']['SaveCurrentFile'](arg1, arg2);
 }

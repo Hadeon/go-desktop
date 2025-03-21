@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from "react";
-import ContentEditable from "react-contenteditable";
 import "./App.css";
 import { handleHotkeys } from "./utils/keybindings";
 import { useFileOperations } from "./hooks/useFileOperations";
@@ -8,8 +7,9 @@ import { useEditorState } from "./hooks/useEditorState";
 import { useScrollTracking } from "./hooks/useScrollTracking";
 import { useTheme } from "./hooks/useTheme";
 import ScrollArea from "./components/scroll-area";
-import Navbar from "./components/Navbar";
+import Navbar from "./components/nav-bar";
 import SettingsModal from "./components/settings-modal";
+import Editor from "./components/editor";
 
 function App() {
   const { html, setHtml, statistics, updateStatistics } = useEditorState();
@@ -23,12 +23,12 @@ function App() {
     unsaved,
     setUnsaved,
     handleSave,
+    handleSaveAs,
     handleOpen,
     updateFilePath,
   } = useFileOperations();
 
   const { theme, applyTheme } = useTheme();
-  //   applyTheme("oneDark");
 
   const handleNew = useCallback(async () => {
     if (unsaved) {
@@ -54,7 +54,7 @@ function App() {
       setHtml(content);
       updateStatistics(content);
     }
-  }, [unsaved, showConfirm, handleOpen]);
+  }, [unsaved, showConfirm, handleOpen, updateStatistics]);
 
   const handleKeyDown = useCallback(
     async (e) => {
@@ -67,7 +67,7 @@ function App() {
         statistics
       );
     },
-    [handleSave, currentFilePath]
+    [handleSave, currentFilePath, setHtml, updateStatistics, statistics]
   );
 
   const handleChange = (e) => {
@@ -89,7 +89,7 @@ function App() {
 
   useEffect(() => {
     applyTheme(theme);
-  }, [theme]);
+  }, [theme, applyTheme]);
 
   return (
     <div id="App">
@@ -97,6 +97,7 @@ function App() {
         handleNew={handleNew}
         handleOpenFile={handleOpenFile}
         handleSave={handleSave}
+        handleSaveAs={handleSaveAs}
         currentFilePath={currentFilePath}
         statistics={statistics}
         onSettingsClick={toggleSettings}
@@ -105,21 +106,13 @@ function App() {
         id="editor-wrapper"
         style={{ display: "flex", flexDirection: "row" }}
       >
-        <div
-          id="editor-container"
-          ref={editorContainerRef}
-          style={{ flex: 1, overflowY: "auto" }}
-        >
-          <ContentEditable
-            id="editor"
-            html={html}
-            onChange={handleChange}
-            onKeyDown={handleKeyDown}
-            onScroll={handleScroll}
-            placeholder="Start writing here..."
-            className="editable-content"
-          />
-        </div>
+        <Editor
+          html={html}
+          onChange={handleChange}
+          onKeyDown={handleKeyDown}
+          onScroll={handleScroll}
+          editorContainerRef={editorContainerRef}
+        />
         <ScrollArea
           scrollTop={scrollState.scrollTop}
           scrollHeight={scrollState.scrollHeight}
