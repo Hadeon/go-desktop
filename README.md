@@ -1,5 +1,11 @@
 # README
 
+## License
+
+This project is licensed under the GNU GPL v3.0 for open source use.
+
+For commercial use, please contact andersene909@gmail.com
+
 # Go Desktop Creative Writing Application
 
 This is just a starter application for a very lightweight creative writing application written in Go.
