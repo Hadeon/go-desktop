@@ -36,12 +36,10 @@ To build a redistributable, production mode package, use `wails build`.
 
 ### v2.0
 
-- Allow saving and opening of different file formats.
-- [ ] Swap between themes, or the ability to create/import custom themes
+- [ ] Allow saving and opening of different file formats.
+- [x] Swap between themes
   - [x] Alt. theme values set
-  - [ ] Add component to swap themes
-  - [ ] Add custom theme option
-    - [ ] Will have inputs for hexcodes
+  - [x] Add component to swap themes
 - [x] Add a custom scroll on the right side which shows header (chapter) "nodes" you can click on to quickly autoscroll to them.
 
   - [x] Maybe show ticks for the number of pages between nodes, so you can visually see variations of chapter lengths
@@ -67,6 +65,8 @@ To build a redistributable, production mode package, use `wails build`.
   - Versioning for specific chapters
     - Ability to "swap" between saved chapters
       - Need a special project format if this is the case, rather than saving to a traditional file format
+  - [ ] Add custom theme option
+  - [ ] Will have inputs for hexcodes
 
 ### Changelog
 
