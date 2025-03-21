@@ -1,0 +1,7 @@
+Commercial License
+
+This software is also available under a commercial license for organizations or individuals who do not wish to comply with the GNU General Public License v3.0.
+
+By purchasing a commercial license, you are granted the right to use the software in proprietary projects and/or for commercial distribution, with restrictions against reselling the software itself as a standalone product or derivative work.
+
+For commercial inquiries, licensing, or support, contact: andersene909@gmail.com
