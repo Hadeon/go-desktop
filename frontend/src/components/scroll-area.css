@@ -1,6 +1,6 @@
 .scroll-area-container {
   width: 50px;
-  background-color: #181e28;
+  background-color: var(--navbar-color);
   position: relative;
   height: 90vh;
   overflow-y: visible !important;

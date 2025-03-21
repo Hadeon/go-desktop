@@ -1,0 +1,73 @@
+// Need to add more variables for some of the other components
+// where these values get mismatched
+
+export const themes = {
+  oneDark: {
+    "--background-color": "#272b33",
+    "--background-color-blue": "#181e29",
+    "--navbar-color": "#181e28",
+    "--text-color": "#abb2bf",
+    "--button-background-color": "#61afef",
+    "--button-hover-background-color": "#528bff",
+    "--button-text-color": "#282c34",
+    "--input-background-color": "#3e4451",
+    "--input-hover-background-color": "#4b5263",
+    "--editor-background-color": "#21252b",
+    "--editor-text-color": "#abb2bf",
+  },
+
+  solarizedDark: {
+    "--background-color": "#002b36",
+    "--background-color-blue": "#073642",
+    "--navbar-color": "#002b36",
+    "--text-color": "#839496",
+    "--button-background-color": "#268bd2",
+    "--button-hover-background-color": "#2aa198",
+    "--button-text-color": "#002b36",
+    "--input-background-color": "#073642",
+    "--input-hover-background-color": "#586e75",
+    "--editor-background-color": "#113c46",
+    "--editor-text-color": "#93a1a1",
+  },
+
+  lightTheme: {
+    "--background-color": "#cacaca",
+    "--background-color-blue": "#f5f5f5",
+    "--navbar-color": "#cacaca",
+    "--text-color": "#333333",
+    "--button-background-color": "#333333",
+    "--button-hover-background-color": "#000000",
+    "--button-text-color": "#ffffff",
+    "--input-background-color": "#e0e0e0",
+    "--input-hover-background-color": "#d6d6d6",
+    "--editor-background-color": "#ffffff",
+    "--editor-text-color": "#333333",
+  },
+
+  dracula: {
+    "--background-color": "#282a36",
+    "--background-color-blue": "#44475a",
+    "--navbar-color": "#44475a",
+    "--text-color": "#f8f8f2",
+    "--button-background-color": "#50fa7b",
+    "--button-hover-background-color": "#6272a4",
+    "--button-text-color": "#282a36",
+    "--input-background-color": "#44475a",
+    "--input-hover-background-color": "#6272a4",
+    "--editor-background-color": "#282a36",
+    "--editor-text-color": "#f8f8f2",
+  },
+  sepia: {
+    "--background-color": "#f4ecd8",
+    "--background-color-blue": "#c0a47c",
+    "--navbar-color": "#c0a47c",
+    "--text-color": "#5b4636",
+    "--button-background-color": "#d4b47f",
+    "--button-hover-background-color": "#c89a68",
+    "--button-text-color": "#3e2f22",
+    "--input-background-color": "#e5d5b8",
+    "--input-hover-background-color": "#d9c6a7",
+    "--editor-background-color": "#f4ecd8",
+    "--editor-text-color": "#5b4636",
+  },
+};

@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import ContentEditable from "react-contenteditable";
 import "./App.css";
 import { handleHotkeys } from "./utils/keybindings";
@@ -6,13 +6,16 @@ import { useFileOperations } from "./hooks/useFileOperations";
 import { useConfirm } from "./hooks/useConfirm";
 import { useEditorState } from "./hooks/useEditorState";
 import { useScrollTracking } from "./hooks/useScrollTracking";
+import { useTheme } from "./hooks/useTheme";
 import ScrollArea from "./components/scroll-area";
 import Navbar from "./components/Navbar";
+import SettingsModal from "./components/settings-modal";
 
 function App() {
-  // HOOKS
   const { html, setHtml, statistics, updateStatistics } = useEditorState();
   const { scrollState, handleScroll, editorContainerRef } = useScrollTracking();
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const toggleSettings = () => setSettingsOpen((prev) => !prev);
   const { confirmMessage, confirmVisible, showConfirm, confirmYes, confirmNo } =
     useConfirm();
   const {
@@ -24,7 +27,9 @@ function App() {
     updateFilePath,
   } = useFileOperations();
 
-  // NEW FILE HANDLER
+  const { theme, applyTheme } = useTheme();
+  //   applyTheme("oneDark");
+
   const handleNew = useCallback(async () => {
     if (unsaved) {
       const result = await showConfirm(
@@ -37,7 +42,6 @@ function App() {
     setUnsaved(false);
   }, [unsaved, showConfirm, setUnsaved, updateFilePath]);
 
-  // OPEN FILE HANDLER
   const handleOpenFile = useCallback(async () => {
     if (unsaved) {
       const result = await showConfirm(
@@ -52,7 +56,6 @@ function App() {
     }
   }, [unsaved, showConfirm, handleOpen]);
 
-  // HOTKEY HANDLING
   const handleKeyDown = useCallback(
     async (e) => {
       await handleHotkeys(
@@ -67,14 +70,12 @@ function App() {
     [handleSave, currentFilePath]
   );
 
-  // CONTENT CHANGE HANDLER
   const handleChange = (e) => {
     setHtml(e.target.value);
     setUnsaved(true);
     updateStatistics(e.target.value);
   };
 
-  // WINDOW CLOSE HANDLING
   useEffect(() => {
     const handleBeforeUnload = (e) => {
       if (unsaved) {
@@ -86,6 +87,10 @@ function App() {
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [unsaved]);
 
+  useEffect(() => {
+    applyTheme(theme);
+  }, [theme]);
+
   return (
     <div id="App">
       <Navbar
@@ -94,6 +99,7 @@ function App() {
         handleSave={handleSave}
         currentFilePath={currentFilePath}
         statistics={statistics}
+        onSettingsClick={toggleSettings}
       />
       <div
         id="editor-wrapper"
@@ -130,6 +136,7 @@ function App() {
           </div>
         </div>
       )}
+      {settingsOpen && <SettingsModal onClose={() => setSettingsOpen(false)} />}
     </div>
   );
 }

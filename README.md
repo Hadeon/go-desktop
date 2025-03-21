@@ -36,9 +36,10 @@ To build a redistributable, production mode package, use `wails build`.
 
 ### v2.0
 
-- Allow saving and opening of different file formats.
-- [ ] Swap between themes, or the ability to create/import custom themes
-- Spellchecker
+- [ ] Allow saving and opening of different file formats.
+- [x] Swap between themes
+  - [x] Alt. theme values set
+  - [x] Add component to swap themes
 - [x] Add a custom scroll on the right side which shows header (chapter) "nodes" you can click on to quickly autoscroll to them.
 
   - [x] Maybe show ticks for the number of pages between nodes, so you can visually see variations of chapter lengths
@@ -56,11 +57,17 @@ To build a redistributable, production mode package, use `wails build`.
 
 - TBD
   - Possibly integrate some very basic local AI for proofreading / summaries
+  - Spellcheck
+    - Dictionary and thesaurus support on right click as well
   - Possibly create a graph or "node" viewer to link ideas
     - Plot points, characters, etc.
       - Think a lightweight Obsidian graph but more like a "cork board" with stripped down features
   - Versioning for specific chapters
     - Ability to "swap" between saved chapters
       - Need a special project format if this is the case, rather than saving to a traditional file format
+  - [ ] Add custom theme option
+  - [ ] Will have inputs for hexcodes
 
 ### Changelog
+
+_Not needed yet. Will begin once the roadmap is complete._
