@@ -5,6 +5,7 @@ import {
   OpenFileDialog,
   SaveFileDialog,
   SaveCurrentFile,
+  SaveAs,
 } from "../../wailsjs/go/main/App";
 
 export function useFileOperations() {
@@ -34,6 +35,19 @@ export function useFileOperations() {
     }
   }, [updateFilePath]);
 
+  const handleSaveAs = useCallback(async () => {
+    const editorContent = document.getElementById("editor").innerHTML;
+    try {
+      const newFilename = await SaveAs(editorContent);
+      if (newFilename) {
+        updateFilePath(newFilename);
+        setUnsaved(false);
+      }
+    } catch (error) {
+      alert("Error saving file as: " + (error?.message || "Unknown error"));
+    }
+  }, [updateFilePath]);
+
   const handleOpen = useCallback(async () => {
     const filename = await OpenFileDialog();
     if (filename) {
@@ -51,6 +65,7 @@ export function useFileOperations() {
     setUnsaved,
     handleSave,
     handleOpen,
+    handleSaveAs,
     updateFilePath,
     currentFilePathRef,
   };

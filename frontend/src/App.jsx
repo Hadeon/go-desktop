@@ -23,6 +23,7 @@ function App() {
     unsaved,
     setUnsaved,
     handleSave,
+    handleSaveAs,
     handleOpen,
     updateFilePath,
   } = useFileOperations();
@@ -97,6 +98,7 @@ function App() {
         handleNew={handleNew}
         handleOpenFile={handleOpenFile}
         handleSave={handleSave}
+        handleSaveAs={handleSaveAs}
         currentFilePath={currentFilePath}
         statistics={statistics}
         onSettingsClick={toggleSettings}

@@ -1,10 +1,17 @@
 import React from "react";
-import { FiSettings, FiFolder, FiSave, FiFilePlus } from "react-icons/fi";
+import {
+  FiSettings,
+  FiFolder,
+  FiSave,
+  FiFilePlus,
+  FiCopy,
+} from "react-icons/fi";
 
 const Navbar = ({
   handleNew,
   handleOpenFile,
   handleSave,
+  handleSaveAs,
   currentFilePath,
   statistics,
   onSettingsClick,
@@ -19,6 +26,9 @@ const Navbar = ({
       </button>
       <button className="clickable" onClick={handleSave}>
         <FiSave size={18} color="var(--button-background-color)" />
+      </button>
+      <button className="clickable" onClick={handleSaveAs}>
+        <FiCopy size={18} color="var(--button-background-color)" />
       </button>
       <text
         style={{ marginLeft: "2rem", userSelect: "none", cursor: "default" }}

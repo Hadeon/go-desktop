@@ -7,6 +7,8 @@ export function OpenFileDialog():Promise<string>;
 
 export function OpenText(arg1:string):Promise<string>;
 
+export function SaveAs(arg1:string):Promise<string>;
+
 export function SaveCurrentFile(arg1:string,arg2:string):Promise<void>;
 
 export function SaveFileDialog():Promise<string>;
